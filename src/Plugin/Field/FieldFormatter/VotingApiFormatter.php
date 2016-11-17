@@ -104,6 +104,11 @@ class VotingApiFormatter extends FormatterBase {
 
     $vote_type = $field_settings['vote_type'];
     $vote_plugin = $field_settings['vote_plugin'];
+    $readonly = $this->getSetting('readonly');
+
+    if (!$items->status) {
+      $readonly = TRUE;
+    }
 
     $elements[] = [
       'vote_form' => [
@@ -117,7 +122,7 @@ class VotingApiFormatter extends FormatterBase {
             $this->getSetting('resultfunction'),
             $this->getSetting('style'),
             $this->getSetting('show_results'),
-            $this->getSetting('readonly'),
+            $readonly,
           ],
         ],
         '#create_placeholder' => TRUE,
