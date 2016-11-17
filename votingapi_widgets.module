@@ -9,6 +9,8 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_help().
  */
@@ -46,9 +48,22 @@ function votingapi_widgets_entity_base_field_info(EntityTypeInterface $entity_ty
   return $fields;
 }
 
+function votingapi_widgets_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state) {
+  if ($form_state->getFormObject()->getEntity()->getType() == 'voting_api_field') {
+    // We only support posting one comment at the time so it doesn't make sense
+    // to let the site builder choose anything else.
+    $form['cardinality_container']['cardinality']['#default_value'] = 1;
+    $form['cardinality_container']['#access'] = FALSE;
+  }
+}
+
 /**
  * Implements hook_entity_type_build().
  */
 function votingapi_widgets_entity_type_build(array &$entity_types) {
-  $entity_types['vote']->setFormClass('base', 'Drupal\votingapi_widgets\Form\BaseRatingForm');
+  $plugins = \Drupal::service('plugin.manager.voting_api_widget.processor')->getDefinitions();
+  foreach ($plugins as $plugin_id => $definition) {
+    $entity_types['vote']->setFormClass('votingapi_' . $plugin_id, 'Drupal\votingapi_widgets\Form\BaseRatingForm');
+  }
+
 }

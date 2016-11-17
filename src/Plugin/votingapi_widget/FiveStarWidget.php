@@ -49,7 +49,7 @@ class FiveStarWidget extends VotingApiWidgetBase {
       $vote = $storage->load(array_shift($votes));
     }
 
-    $form = \Drupal::service('entity.form_builder')->getForm($vote, 'base', [
+    $form = \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_fivestar', [
       'read_only' => $read_only,
       'options' => $this->getPluginDefinition()['values'],
       'resultfunction' => $result_function,
