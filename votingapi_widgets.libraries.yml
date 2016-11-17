@@ -1,0 +1,20 @@
+fivestar:
+  version: VERSION
+  js:
+    js/rating.js : {}
+    https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/jquery.barrating.min.js: {}
+  css:
+    theme:
+      http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/css-stars.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-square.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-pill.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-movie.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-horizontal.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/fontawesome-stars.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/fontawesome-stars-o.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-reversed.min.css: {}
+      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bootstrap-stars.min.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

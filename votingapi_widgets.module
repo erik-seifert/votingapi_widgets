@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Contains votingapi_widgets.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+/**
+ * Implements hook_help().
+ */
+function votingapi_widgets_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the votingapi_widgets module.
+    case 'help.page.votingapi_widgets':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Voting API Widgets') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function votingapi_widgets_entity_base_field_info(EntityTypeInterface $entity_type) {
+  // Add the switch field as a base field.
+  if ($entity_type->id() != 'vote') {
+    return;
+  }
+  $fields = array();
+
+  $fields['field_name'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Field name'))
+    ->setName('field_name')
+    ->setRevisionable(FALSE)
+    ->setRequired(FALSE)
+    ->setDescription(t('Holds the field name.'))
+    ->setPropertyConstraints('value', array('Length' => array('max' => FieldStorageConfig::NAME_MAX_LENGTH)));
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function votingapi_widgets_entity_type_build(array &$entity_types) {
+  $entity_types['vote']->setFormClass('base', 'Drupal\votingapi_widgets\Form\BaseRatingForm');
+}
