@@ -75,7 +75,7 @@ class VotingApiField extends FieldItemBase {
           'description' => 'Whether votes are allowed on this entity: 0 = no, 1 = closed (read only), 2 = open (read/write).',
           'type' => 'int',
           'default' => 0,
-        )
+        ),
       ),
       'indexes' => array(),
       'foreign keys' => array(),
