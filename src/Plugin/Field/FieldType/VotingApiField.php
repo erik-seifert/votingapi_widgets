@@ -62,39 +62,6 @@ class VotingApiField extends FieldItemBase {
       ->setLabel(t('Vote status'))
       ->setRequired(TRUE);
 
-    $properties['vote_plugin'] = DataDefinition::create('string')
-      ->setLabel(t('Vote status'))
-      ->setRequired(TRUE);
-
-    $properties['vote_type'] = DataDefinition::create('string')
-      ->setLabel(t('Vote status'))
-      ->setRequired(TRUE);
-
-    $properties['vote_id'] = DataDefinition::create('integer')
-      ->setLabel(t('Last vote ID'));
-
-    $properties['last_vote_timestamp'] = DataDefinition::create('integer')
-      ->setLabel(t('Last vote timestamp'))
-      ->setDescription(t('The time that the last vote was created.'));
-
-    $properties['last_vote_name'] = DataDefinition::create('string')
-      ->setLabel(t('Last vote name'))
-      ->setDescription(t('The name of the user posting the last vote.'));
-
-    $properties['last_vote_uid'] = DataDefinition::create('integer')
-      ->setLabel(t('Last vote user ID'));
-
-    $properties['vote_count'] = DataDefinition::create('integer')
-      ->setLabel(t('Number of votes'))
-      ->setDescription(t('The number of votes.'));
-
-    $properties['min'] = DataDefinition::create('integer')
-      ->setLabel(t('Number of votes'))
-      ->setDescription(t('The number of votes.'));
-
-    $properties['max'] = DataDefinition::create('integer')
-      ->setLabel(t('Number of votes'))
-      ->setDescription(t('The number of votes.'));
     return $properties;
   }
 
@@ -108,47 +75,11 @@ class VotingApiField extends FieldItemBase {
           'description' => 'Whether votes are allowed on this entity: 0 = no, 1 = closed (read only), 2 = open (read/write).',
           'type' => 'int',
           'default' => 0,
-        ),
-        'vote_plugin' => array(
-          'description' => 'Whether votes are allowed on this entity: 0 = no, 1 = closed (read only), 2 = open (read/write).',
-          'type' => 'varchar',
-          'length' => 128,
-          'default' => 1,
-        ),
-        'vote_type' => array(
-          'description' => 'Whether votes are allowed on this entity: 0 = no, 1 = closed (read only), 2 = open (read/write).',
-          'type' => 'varchar',
-          'length' => 128,
-          'default' => 1,
-        ),
+        )
       ),
       'indexes' => array(),
       'foreign keys' => array(),
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConstraints() {
-    // $constraints = parent::getConstraints();
-    //
-    // if ($max_length = $this->getSetting('max_length')) {
-    //   $constraint_manager = \Drupal::typedDataManager()->getValidationConstraintManager();
-    //   $constraints[] = $constraint_manager->create('ComplexData', [
-    //     'value' => [
-    //       'Length' => [
-    //         'max' => $max_length,
-    //         'maxMessage' => t('%name: may not be longer than @max characters.', [
-    //           '%name' => $this->getFieldDefinition()->getLabel(),
-    //           '@max' => $max_length
-    //         ]),
-    //       ],
-    //     ],
-    //   ]);
-    // }
-    //
-    // return $constraints;
   }
 
   /**
