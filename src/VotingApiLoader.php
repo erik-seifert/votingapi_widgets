@@ -10,7 +10,7 @@ class VotingApiLoader {
   /**
    * Build rate form.
    */
-  public function buildForm($plugin_id, $entity_type, $entity_id, $vote_type, $field_name, $result_function, $style, $show_results, $read_only) {
+  public function buildForm($plugin_id, $entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
     $manager = \Drupal::service('plugin.manager.voting_api_widget.processor');
     $definitions = $manager->getDefinitions();
     $entity = \Drupal::service('entity_type.manager')->getStorage($entity_type)->load($entity_id);
@@ -21,7 +21,7 @@ class VotingApiLoader {
         $read_only = FALSE;
       }
     }
-    return $plugin->buildForm($entity_type, $entity_id, $vote_type, $field_name, $result_function, $style, $show_results, $read_only);
+    return $plugin->buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
   }
 
 }

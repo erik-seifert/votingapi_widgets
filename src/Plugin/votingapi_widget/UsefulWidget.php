@@ -21,7 +21,7 @@ class UsefulWidget extends VotingApiWidgetBase {
   /**
    * Vote form.
    */
-  public function buildForm($entity_type, $entity_id, $vote_type, $field_name, $result_function, $style, $show_results, $read_only = FALSE) {
+  public function buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
     $currentUser = \Drupal::currentUser();
     $voteData = [
