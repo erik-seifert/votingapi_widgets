@@ -24,10 +24,10 @@ class VotingApiFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-      'resultfunction' => 'vote_field_average',
       'readonly' => FALSE,
       'style' => 'default',
       'show_results' => FALSE,
+      'values' => [],
       // Implement default settings.
     ] + parent::defaultSettings();
   }
@@ -55,12 +55,6 @@ class VotingApiFormatter extends FormatterBase {
 
     return [
       // Implement settings form.
-      'resultfunction' => [
-        '#title' => t('Result function'),
-        '#type' => 'select',
-        '#options' => $options,
-        '#default_value' => $this->getSetting('resultfunction'),
-      ],
       'readonly' => [
         '#title' => t('Readonly'),
         '#type' => 'checkbox',
@@ -116,7 +110,6 @@ class VotingApiFormatter extends FormatterBase {
             $entity->id(),
             $vote_type,
             $field_name,
-            $this->getSetting('resultfunction'),
             $this->getSetting('style'),
             $this->getSetting('show_results'),
             $readonly,

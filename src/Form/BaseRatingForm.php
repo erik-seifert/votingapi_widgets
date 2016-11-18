@@ -17,14 +17,10 @@ class BaseRatingForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\adspree_link_manager\Entity\Campaign */
     $form = parent::buildForm($form, $form_state);
     $entity = $this->getEntity();
-    $form_state->disableCache();
-    $form_state->setRebuild(TRUE);
-
+    $result_function = $this->getResultFunction($form_state);
     $options = $form_state->get('options');
-
     $form_id = Html::getUniqueId('vote-form');
 
     $form['#prefix'] = '<div id="' . $form_id . '">';
@@ -35,7 +31,7 @@ class BaseRatingForm extends ContentEntityForm {
       '#options' => $options,
       '#attributes' => [
         'autocomplete' => 'off',
-        'data-default-value' => ($this->getResults($form_state->get('resultfunction'))) ? $this->getResults($form_state->get('resultfunction')) : -1,
+        'data-default-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
       '#default_value' => $this->getResults($form_state->get('resultfunction')),
@@ -83,6 +79,14 @@ class BaseRatingForm extends ContentEntityForm {
   }
 
   /**
+   * Get result function.
+   */
+  protected function getResultFunction(FormStateInterface $form_state) {
+    $entity = $this->getEntity();
+    return ($form_state->get('resultfunction')) ? $form_state->get('resultfunction') : 'vote_field_average:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value;
+  }
+
+  /**
    * Get results.
    */
   public function getResults($result_function = FALSE, $reset = FALSE) {
@@ -98,6 +102,9 @@ class BaseRatingForm extends ContentEntityForm {
 
     if (!$result_function) {
       $results = \Drupal::service('plugin.manager.votingapi.resultfunction')->getResults($entity->getVotedEntityType(), $entity->getVotedEntityId());
+      if (!$results[$entity->getEntityTypeId()]) {
+        return [];
+      }
       $resultCache[$entity->getEntityTypeId()][$entity->getVotedEntityId()] = $results[$entity->getEntityTypeId()];
       return $resultCache[$entity->getEntityTypeId()][$entity->getVotedEntityId()];
     }
@@ -113,6 +120,7 @@ class BaseRatingForm extends ContentEntityForm {
       ];
       return $resultCache[$entity->getEntityTypeId()][$entity->getVotedEntityId()][$result_function];
     }
+    return [];
   }
 
   /**
@@ -120,8 +128,9 @@ class BaseRatingForm extends ContentEntityForm {
    */
   public function ajaxSubmit(array $form, FormStateInterface $form_state) {
     $this->save($form, $form_state);
-    $form['value']['#default_value'] = $this->getResults($form_state->get('resultfunction'), TRUE);
-    $form['value']['#attributes']['data-default-value'] = $this->getResults($form_state->get('resultfunction'));
+    $result_function = $this->getResultFunction($form_state);
+    $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
+    $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
       $results = $this->getResults();
       $form['result']['#children'] = [];
