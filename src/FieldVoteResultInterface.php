@@ -7,4 +7,9 @@ namespace Drupal\votingapi_widgets;
  */
 interface FieldVoteResultInterface {
 
+  /**
+   * Get all votes for a field.
+   */
+  public function getVotesForField($votes);
+
 }
