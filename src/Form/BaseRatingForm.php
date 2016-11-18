@@ -31,6 +31,8 @@ class BaseRatingForm extends ContentEntityForm {
 
     $form['#attributes']['id'] = $form_id;
 
+    $form_state->set('style_test', $form_state->get('style'));
+
     $form['value'] = [
       '#type' => 'select',
       '#options' => $options,
@@ -41,6 +43,7 @@ class BaseRatingForm extends ContentEntityForm {
       ],
       '#default_value' => $this->getResults($result_function),
     ];
+
     if ($form_state->get('read_only')) {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
@@ -131,18 +134,10 @@ class BaseRatingForm extends ContentEntityForm {
     $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
     $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
-      $form['result'] = [
-        '#theme' => 'container',
-        '#attributes' => [
-          'class' => ['vote-result'],
-        ],
-        '#children' => [],
-        '#weight' => 100,
-      ];
       $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
+    $form['result']['#children']['style'] = ['#markup' => $form_state->get('style_test')];
     $form_state->setRebuild(TRUE);
-    $form_state->disableCache();
     return $form;
   }
 

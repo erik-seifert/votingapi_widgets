@@ -60,7 +60,7 @@ class VotingApiWidget extends WidgetBase {
       '#type' => 'radios',
       '#title' => t('Votes'),
       '#title_display' => 'invisible',
-      '#default_value' => $items->status,
+      '#default_value' => 1,
       '#options' => array(
         1 => t('Open'),
         0 => t('Closed'),

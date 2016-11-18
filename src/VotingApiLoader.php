@@ -15,12 +15,11 @@ class VotingApiLoader {
     $definitions = $manager->getDefinitions();
     $entity = \Drupal::service('entity_type.manager')->getStorage($entity_type)->load($entity_id);
     $plugin = $manager->createInstance($plugin_id, $definitions[$plugin_id]);
-    if ($read_only != FALSE && $entity->{$field_name} && $fieldDefinition = $entity->{$field_name}->getFieldDefinition()) {
-      $read_only = $fieldDefinition->get('status');
-      if (!$read_only) {
-        $read_only = FALSE;
-      }
+    $fieldDefinition = $entity->{$field_name}->getFieldDefinition();
+    if ($fieldDefinition->get('status') != 1) {
+      $read_only = TRUE;
     }
+    dsm($fieldDefinition->get('status'), $read_only);
     return $plugin->buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
   }
 
