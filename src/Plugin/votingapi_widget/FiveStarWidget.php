@@ -27,38 +27,7 @@ class FiveStarWidget extends VotingApiWidgetBase {
    * Vote form.
    */
   public function buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
-    $storage = \Drupal::service('entity.manager')->getStorage('vote');
-    $currentUser = \Drupal::currentUser();
-    $voteData = [
-      'entity_type' => $entity_type,
-      'entity_id'   => $entity_id,
-      'type'      => $vote_type,
-      'field_name'  => $field_name,
-    ];
-    $vote = $storage->create($voteData);
-
-    if ($currentUser->isAnonymous()) {
-      $voteData['vote_source'] = \Drupal::service('request_stack')->getCurrentRequest()->getClientIp();
-    }
-
-    $query = \Drupal::entityQuery('vote');
-    foreach ($voteData as $key => $value) {
-      $query->condition($key, $value);
-    }
-
-    $votes = $query->execute();
-    if ($votes && count($votes) > 0) {
-      $vote = $storage->load(array_shift($votes));
-    }
-
-    $form = \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_fivestar', [
-      'read_only' => $read_only,
-      'options' => $this->getPluginDefinition()['values'],
-      'style' => $style,
-      'show_results' => $show_results,
-      'plugin' => $this,
-    ]);
-
+    $form = $this->getForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
     $build = [
       'rating' => [
         '#theme' => 'container',
@@ -83,8 +52,14 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $vote) {
-    return [];
+  public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $entity) {
+    $results = $this->getResults($entity);
+    $average = $results['vote_field_average:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
+    $count = $results['vote_field_count:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
+
+    return [
+      '#markup' => t('@count Votes with an average of @average', ['@count' => $count, '@average' => $average]),
+    ];
   }
 
   /**
