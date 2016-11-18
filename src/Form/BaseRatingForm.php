@@ -34,7 +34,7 @@ class BaseRatingForm extends ContentEntityForm {
         'data-default-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
-      '#default_value' => $this->getResults($form_state->get('resultfunction')),
+      '#default_value' => $this->getResults($result_function),
     ];
     if ($form_state->get('read_only')) {
       $form['value']['#attributes']['disabled'] = 'disabled';
