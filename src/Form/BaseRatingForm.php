@@ -26,6 +26,9 @@ class BaseRatingForm extends ContentEntityForm {
     $form_id = Html::getUniqueId('vote-form');
     $plugin = $form_state->get('plugin');
 
+    $form['#cache']['contexts'][] = 'user.permissions';
+    $form['#cache']['contexts'][] = 'user.roles:authenticated';
+
     $form['#attributes']['id'] = $form_id;
 
     $form['value'] = [
@@ -49,12 +52,16 @@ class BaseRatingForm extends ContentEntityForm {
           'class' => ['vote-result'],
         ],
         '#children' => [],
+        '#weight' => 100,
       ];
 
       $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
 
-    $form['actions']['submit'] += [
+    $form['submit'] = $form['actions']['submit'];
+    $form['actions']['#access'] = FALSE;
+
+    $form['submit'] += [
       '#type' => 'button',
       '#ajax' => [
         'callback' => array($this, 'ajaxSubmit'),
@@ -130,8 +137,8 @@ class BaseRatingForm extends ContentEntityForm {
           'class' => ['vote-result'],
         ],
         '#children' => [],
+        '#weight' => 100,
       ];
-
       $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
     $form_state->setRebuild(TRUE);
