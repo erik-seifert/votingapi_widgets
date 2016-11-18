@@ -13,6 +13,8 @@ use Drupal\Component\Utility\Html;
  */
 class BaseRatingForm extends ContentEntityForm {
 
+  public $plugin;
+
   /**
    * {@inheritdoc}
    */
@@ -22,9 +24,9 @@ class BaseRatingForm extends ContentEntityForm {
     $result_function = $this->getResultFunction($form_state);
     $options = $form_state->get('options');
     $form_id = Html::getUniqueId('vote-form');
+    $plugin = $form_state->get('plugin');
 
-    $form['#prefix'] = '<div id="' . $form_id . '">';
-    $form['#suffix'] = '</div>';
+    $form['#attributes']['id'] = $form_id;
 
     $form['value'] = [
       '#type' => 'select',
@@ -49,19 +51,7 @@ class BaseRatingForm extends ContentEntityForm {
         '#children' => [],
       ];
 
-      $results = $this->getResults();
-      $form['result']['#children'] = [];
-      foreach ($results as $id => $result) {
-        if (strrpos($id, $entity->get('field_name')->value) !== FALSE) {
-          $form['result']['#children'][$id] = [
-            '#theme' => 'container',
-            '#attributes' => ['class' => ['result-' . $id]],
-            '#children' => [
-              '#markup' => $result,
-            ],
-          ];
-        }
-      }
+      $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
 
     $form['actions']['submit'] += [
@@ -129,22 +119,20 @@ class BaseRatingForm extends ContentEntityForm {
   public function ajaxSubmit(array $form, FormStateInterface $form_state) {
     $this->save($form, $form_state);
     $result_function = $this->getResultFunction($form_state);
+    $plugin = $form_state->get('plugin');
+    $entity = $this->getEntity();
     $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
     $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
-      $results = $this->getResults();
-      $form['result']['#children'] = [];
-      foreach ($results as $id => $result) {
-        if (strrpos($id, $this->getEntity()->get('field_name')->value) !== FALSE) {
-          $form['result']['#children'][$id] = [
-            '#theme' => 'container',
-            '#attributes' => ['class' => ['result-' . $id]],
-            '#children' => [
-              '#markup' => $result,
-            ],
-          ];
-        }
-      }
+      $form['result'] = [
+        '#theme' => 'container',
+        '#attributes' => [
+          'class' => ['vote-result'],
+        ],
+        '#children' => [],
+      ];
+
+      $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
     $form_state->setRebuild(TRUE);
     $form_state->disableCache();
