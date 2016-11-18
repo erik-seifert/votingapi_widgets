@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Attaches fivestar rating.
+ */
+
 (function ($, Drupal) {
   Drupal.behaviors.fiveStarRating = {
     attach: function (context, settings) {
@@ -6,7 +11,7 @@
       var $select = $this.find('select');
       var value = $select.data('default-value');
       if (!value) {
-        value = -1 ;
+        value = -1;
       }
       var options = {
         theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
@@ -14,14 +19,11 @@
         initialRating: value,
         allowEmpty: true,
         readonly: ($select.attr('disabled')) ? true : false,
-        onSelect: function(value, text) {
+        onSelect: function (value, text) {
           $this.find('select').barrating('readonly', true);
           $this.find('input[type=submit]').trigger('click');
         },
       };
-      if ($this.hasClass('read_only')) {
-        // options.readonly = TRUE;
-      }
       $this.find('select').once('processed').barrating('show', options);
       $this.find('input[type=submit]').hide();
     });

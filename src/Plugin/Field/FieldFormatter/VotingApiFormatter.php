@@ -2,8 +2,6 @@
 
 namespace Drupal\votingapi_widgets\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -87,8 +85,7 @@ class VotingApiFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    // Implement settings summary.
-
+    // @TODO: Create a summary.
     return $summary;
   }
 

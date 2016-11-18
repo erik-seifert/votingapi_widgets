@@ -7,10 +7,8 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
-use Drupal\Core\Config\Entity\ConfigEntityBase;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
