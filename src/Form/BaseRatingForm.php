@@ -31,8 +31,6 @@ class BaseRatingForm extends ContentEntityForm {
 
     $form['#attributes']['id'] = $form_id;
 
-    $form_state->set('style_test', $form_state->get('style'));
-
     $form['value'] = [
       '#type' => 'select',
       '#options' => $options,
