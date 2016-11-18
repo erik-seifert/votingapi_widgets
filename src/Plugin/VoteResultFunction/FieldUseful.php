@@ -23,7 +23,7 @@ class FieldUseful extends FieldVoteResultBase {
     $total = 0;
     $votes = $this->getVotesForField($votes);
     foreach ($votes as $vote) {
-      if ($vote->value->value) {
+      if ($vote->value->value == 1) {
         $total++;
       }
     }
