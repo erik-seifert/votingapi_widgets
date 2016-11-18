@@ -3,6 +3,8 @@
 namespace Drupal\votingapi_widgets\Plugin\votingapi_widget;
 
 use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Assigns ownership of a node to a user.
@@ -49,16 +51,20 @@ class UsefulWidget extends VotingApiWidgetBase {
     $form = \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_useful', [
       'read_only' => $read_only,
       'options' => $this->getPluginDefinition()['values'],
-      'resultfunction' => $result_function,
       'style' => $style,
       'show_results' => $show_results,
+      'plugin' => $this,
     ]);
 
     $build = [
       'rating' => [
         '#theme' => 'container',
         '#attributes' => [
-          'class' => ['useful', ($read_only) ? 'read_only' : ''],
+          'class' => [
+            'votingapi-widgets',
+            'useful',
+            ($read_only) ? 'read_only' : '',
+          ],
         ],
         '#children' => [
           'form' => $form,
@@ -78,6 +84,13 @@ class UsefulWidget extends VotingApiWidgetBase {
     return [
       'default' => t('Default'),
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $vote) {
+    return [];
   }
 
 }
