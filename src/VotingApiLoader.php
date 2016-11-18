@@ -2,9 +2,6 @@
 
 namespace Drupal\votingapi_widgets;
 
-use Drupal\votingapi_widgets\Plugin\VotingApiWidgetManagerInterface;
-use Drupal\Core\Form\FormBuilder;
-
 /**
  * Implements lazy loading.
  */

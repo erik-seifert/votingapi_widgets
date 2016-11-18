@@ -120,7 +120,7 @@ class BaseRatingForm extends ContentEntityForm {
    */
   public function ajaxSubmit(array $form, FormStateInterface $form_state) {
     $this->save($form, $form_state);
-    $form['value']['#default_value'] = $this->getResults($form_state->get('resultfunction'), true);
+    $form['value']['#default_value'] = $this->getResults($form_state->get('resultfunction'), TRUE);
     $form['value']['#attributes']['data-default-value'] = $this->getResults($form_state->get('resultfunction'));
     if ($form_state->get('show_results')) {
       $results = $this->getResults();

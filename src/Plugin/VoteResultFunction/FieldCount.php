@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\votingapi\Plugin\VoteResultFunction\Count.
- */
-
 namespace Drupal\votingapi_widgets\Plugin\VoteResultFunction;
 
 use Drupal\votingapi_widgets\FieldVoteResultBase;

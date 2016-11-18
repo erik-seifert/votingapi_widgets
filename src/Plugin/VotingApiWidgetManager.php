@@ -11,7 +11,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
  */
 class VotingApiWidgetManager extends DefaultPluginManager {
 
-
   /**
    * Constructor for VotingApiWidgetManager objects.
    *

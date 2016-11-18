@@ -5,17 +5,16 @@ namespace Drupal\votingapi_widgets\Plugin\Derivative;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 
 /**
- * Doc.
+ * Deriver base class for field vote calculations.
  */
 class FieldResultFunction extends DeriverBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    // print_r($base_plugin_definition);
     $instances = \Drupal::service('entity_field.manager')->getFieldMapByFieldType('voting_api_field');
-    // print_r($instances);
     $this->derivatives = [];
-    // dsm($instances);
-    // dsm($base_plugin_definition);
     foreach ($instances as $entity_type => $fields) {
       foreach (array_keys($fields) as $field_name) {
         $plugin_id = $entity_type . '.' . $field_name;
@@ -23,7 +22,6 @@ class FieldResultFunction extends DeriverBase {
       }
     }
     return $this->derivatives;
-
   }
 
 }

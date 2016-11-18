@@ -3,12 +3,11 @@
 namespace Drupal\votingapi_widgets;
 
 use Drupal\votingapi\VoteResultFunctionBase;
-use Drupal\votingapi_widgets\FieldVoteResult;
 
 /**
  * FieldVoteResultBase class.
  */
-class FieldVoteResultBase extends VoteResultFunctionBase implements FieldVoteResult  {
+class FieldVoteResultBase extends VoteResultFunctionBase implements FieldVoteResultInterface {
 
   /**
    * Get votes for field.
@@ -24,8 +23,11 @@ class FieldVoteResultBase extends VoteResultFunctionBase implements FieldVoteRes
     return $votes;
   }
 
+  /**
+   * Calculate results.
+   */
   public function calculateResult($votes) {
-
+    return count($votes);
   }
 
 }
