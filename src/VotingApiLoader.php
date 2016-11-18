@@ -19,7 +19,6 @@ class VotingApiLoader {
     if ($fieldDefinition->get('status') != 1) {
       $read_only = TRUE;
     }
-    dsm($fieldDefinition->get('status'), $read_only);
     return $plugin->buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
   }
 
