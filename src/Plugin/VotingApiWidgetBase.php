@@ -43,7 +43,29 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   /**
    * Get results.
    */
-  public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
+  public function canVote($vote, $account = FALSE) {
+    if (!$account) {
+      $account = \Drupal::currentUser();
+    }
+    $entity = \Drupal::service('entity.manager')
+      ->getStorage($vote->getVotedEntityType())
+      ->load($vote->getVotedEntityId());
+
+    if (!$entity) {
+      return FALSE;
+    }
+
+    $perm = 'vote on ' . $vote->getVotedEntityType() . ':' . $entity->getType() . ':' . $vote->field_name->value;
+    if (!$vote->isNew()) {
+      $perm = 'edit own vote on ' . $vote->getVotedEntityType() . ':' . $entity->getType() . ':' . $vote->field_name->value;
+    }
+    return $account->hasPermission($perm);
+  }
+
+  /**
+   * Get results.
+   */
+  public function getEntityForVoting($entity_type, $entity_id, $vote_type, $field_name) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
     $currentUser = \Drupal::currentUser();
     $voteData = [
