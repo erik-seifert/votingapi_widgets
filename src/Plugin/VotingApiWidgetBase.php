@@ -5,6 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Base class for Voting api widget plugins.
@@ -28,8 +29,8 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   /**
    * Get results.
    */
-  public function getForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
-    $vote = $this->getEntityForVoting($entity_type, $entity_id, $vote_type, $field_name);
+  public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
+    $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
     return \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_' . $this->getPluginId(), [
       'read_only' => $read_only,
       'options' => $this->getPluginDefinition()['values'],
@@ -64,7 +65,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   /**
    * Get results.
    */
-  public function getEntityForVoting($entity_type, $entity_id, $vote_type, $field_name) {
+  public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
     $currentUser = \Drupal::currentUser();
     $voteData = [
@@ -83,6 +84,20 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $query = \Drupal::entityQuery('vote');
     foreach ($voteData as $key => $value) {
       $query->condition($key, $value);
+    }
+
+    if (isset($voteData['vote_source'])) {
+      // Anonymous vote
+      $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
+
+    } else {
+      // Registered user vote
+      $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
+    }
+
+    // check for rollover 'never' setting
+    if (!empty($timestamp_offset)) {
+      $query->condition('timestamp', time() - $timestamp_offset, '>=');
     }
 
     $votes = $query->execute();
@@ -118,8 +133,28 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       }
       return $resultCache[$entity->getEntityTypeId()][$entity->getVotedEntityId()];
     }
-
     return [];
+  }
+
+  public function getWindow($window_type, $entity_type_id, $entity_bundle, $field_name) {
+    $config = FieldConfig::loadByName($entity_type_id, $entity_bundle, $field_name);
+    $window_field_setting = $config->get($window_type);
+    if ($window_field_setting === NULL || $window_field_setting === -1) {
+      $use_site_default = TRUE;
+    } else {
+      $use_site_default = FALSE;
+    }
+
+    if ($use_site_default) {
+      /**
+       * @var \Drupal\Core\Config\ImmutableConfig $voting_configuration
+       */
+      $voting_configuration = \Drupal::config('votingapi.settings');
+      $window = $voting_configuration->get($window_type);
+    } else {
+      $window = $window_field_setting;
+    }
+    return $window;
   }
 
   /**

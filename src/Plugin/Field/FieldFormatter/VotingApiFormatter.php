@@ -107,6 +107,7 @@ class VotingApiFormatter extends FormatterBase {
           'voting_api.lazy_loader:buildForm', [
             $vote_plugin,
             $entity->getEntityTypeId(),
+            $entity->bundle(),
             $entity->id(),
             $vote_type,
             $field_name,
