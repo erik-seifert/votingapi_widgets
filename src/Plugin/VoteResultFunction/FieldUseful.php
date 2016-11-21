@@ -8,13 +8,13 @@ use Drupal\votingapi_widgets\FieldVoteResultBase;
  * A sum of a set of votes.
  *
  * @VoteResultFunction(
- *   id = "vote_field_average",
- *   label = @Translation("Average"),
+ *   id = "vote_field_useful",
+ *   label = @Translation("Useful rating"),
  *   description = @Translation("The average vote value."),
  *   deriver = "Drupal\votingapi_widgets\Plugin\Derivative\FieldResultFunction",
  * )
  */
-class FieldAverage extends FieldVoteResultBase {
+class FieldUseful extends FieldVoteResultBase {
 
   /**
    * {@inheritdoc}
@@ -23,9 +23,11 @@ class FieldAverage extends FieldVoteResultBase {
     $total = 0;
     $votes = $this->getVotesForField($votes);
     foreach ($votes as $vote) {
-      $total += $vote->getValue();
+      if ($vote->value->value == 1) {
+        $total++;
+      }
     }
-    return ($total / count($votes));
+    return $total;
   }
 
 }

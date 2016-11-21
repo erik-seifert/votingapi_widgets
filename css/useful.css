@@ -1,0 +1,9 @@
+.votingapi-widgets.useful .useful-rating a {
+  border: none !important;
+  margin-right: .5em;
+  display: inline-block;
+}
+
+.votingapi-widgets.useful .useful-rating a.disabled {
+  opacity: 0.5;
+}
