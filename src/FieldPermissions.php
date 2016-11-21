@@ -58,6 +58,13 @@ class FieldPermissions implements ContainerInjectionInterface {
               '@field' => $field_name,
             ]),
           ];
+          $perms['clear own vote on ' . $entity_type . ':' . $bundle . ':' . $field_name] = [
+            'title' => t('Clear vote on type @type from bundle @bundle in field @field', [
+              '@type' => $entity_type,
+              '@bundle' => $bundle,
+              '@field' => $field_name,
+            ]),
+          ];
         }
       }
     }
