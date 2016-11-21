@@ -55,6 +55,9 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     }
 
     $perm = 'vote on ' . $vote->getVotedEntityType() . ':' . $entity->getType() . ':' . $vote->field_name->value;
+    if (!$vote->isNew()) {
+      $perm = 'edit own vote on ' . $vote->getVotedEntityType() . ':' . $entity->getType() . ':' . $vote->field_name->value;
+    }
     return $account->hasPermission($perm);
   }
 

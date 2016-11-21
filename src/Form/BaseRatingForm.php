@@ -134,6 +134,10 @@ class BaseRatingForm extends ContentEntityForm {
     if ($form_state->get('show_results')) {
       $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
     }
+    if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
+      $form['value']['#attributes']['disabled'] = 'disabled';
+    }
+
     $form_state->setRebuild(TRUE);
     return $form;
   }
