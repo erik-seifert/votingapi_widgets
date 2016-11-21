@@ -26,8 +26,8 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * Vote form.
    */
-  public function buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
-    $form = $this->getForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
+  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
+    $form = $this->getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
     $build = [
       'rating' => [
         '#theme' => 'container',
@@ -54,6 +54,9 @@ class FiveStarWidget extends VotingApiWidgetBase {
    */
   public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $entity) {
     $results = $this->getResults($entity);
+    if (empty($results)) {
+      return;
+    }
     $average = $results['vote_field_average:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
     $count = $results['vote_field_count:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
 
