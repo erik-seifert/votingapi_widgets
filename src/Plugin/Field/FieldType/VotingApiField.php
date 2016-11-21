@@ -122,7 +122,7 @@ class VotingApiField extends FieldItemBase {
 
     $element['vote_plugin'] = array(
       '#type' => 'select',
-      '#title' => t('Vote type'),
+      '#title' => t('Vote plugin'),
       '#options' => $vote_options,
       '#required' => TRUE,
       '#default_value' => $this->getSetting('vote_plugin'),
