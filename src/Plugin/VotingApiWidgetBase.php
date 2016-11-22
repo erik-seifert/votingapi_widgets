@@ -75,20 +75,16 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       'user_id' => $currentUser->id(),
     ];
     $vote = $storage->create($voteData);
+    $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
 
     if ($currentUser->isAnonymous()) {
       $voteData['vote_source'] = \Drupal::service('request_stack')->getCurrentRequest()->getClientIp();
+      $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 
     $query = \Drupal::entityQuery('vote');
     foreach ($voteData as $key => $value) {
       $query->condition($key, $value);
-    }
-
-    $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
-    if (isset($voteData['vote_source'])) {
-      // Anonymous vote.
-      $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 
     // Check for rollover 'never' setting.
