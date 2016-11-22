@@ -93,7 +93,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     }
 
     // Check for rollover 'never' setting.
-    if (!empty($timestamp_offset)) {
+    if (!empty($timestamp_offset) && $timestamp_offset != -1) {
       $query->condition('timestamp', time() - $timestamp_offset, '>=');
     }
 
