@@ -10,6 +10,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Implements hook_help().
@@ -68,5 +69,37 @@ function votingapi_widgets_entity_type_build(array &$entity_types) {
   foreach ($plugins as $plugin_id => $definition) {
     $entity_types['vote']->setFormClass('votingapi_' . $plugin_id, 'Drupal\votingapi_widgets\Form\BaseRatingForm');
   }
+}
 
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function votingapi_widgets_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if ($hook == 'votingapi_widgets_summary') {
+    $entity = $variables['vote'];
+    $content = \Drupal::service('entity_type.manager')->getStorage($entity->getVotedEntityType())->load($entity->getVotedEntityId());
+    $fieldSettings = FieldConfig::loadByName($content->getEntityTypeId(), $content->bundle(), $variables['field_name']);
+    $plugin = $fieldSettings->getSetting('vote_plugin');
+
+    $suggestions[] = $hook . '__' . $plugin;
+    $suggestions[] = $hook . '__' . $plugin . '__' . $entity->field_name->value;
+    $suggestions[] = $hook . '__' . $plugin . '__' . $content->getEntityTypeId();
+    $suggestions[] = $hook . '__' . $plugin . '__' . $content->getEntityTypeId() . '__' . $content->bundle() . '__' . $entity->field_name->value;
+    $suggestions[] = $hook . '__' . $plugin . '__' . $content->getEntityTypeId() . '__' . $content->bundle();
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function votingapi_widgets_theme() {
+  return [
+    'votingapi_widgets_summary' => [
+      'variables' => [
+        'results' => [],
+        'vote'    => NULL,
+        'field_name'  => NULL,
+      ],
+    ],
+  ];
 }

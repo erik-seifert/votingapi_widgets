@@ -55,16 +55,4 @@ class UsefulWidget extends VotingApiWidgetBase {
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $entity) {
-    $results = $this->getResults($entity);
-    $average = $results['vote_field_useful:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
-
-    return [
-      '#markup' => t('@average Users found this content useful', ['@average' => $average]),
-    ];
-  }
-
 }
