@@ -140,7 +140,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   public function getWindow($window_type, $entity_type_id, $entity_bundle, $field_name) {
     $config = FieldConfig::loadByName($entity_type_id, $entity_bundle, $field_name);
 
-    $window_field_setting = $config->get($window_type);
+    $window_field_setting = $config->getSetting($window_type);
     $use_site_default = FALSE;
 
     if ($window_field_setting === NULL || $window_field_setting === -1) {
