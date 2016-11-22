@@ -172,7 +172,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     foreach ($results as $key => $result) {
       if (strrpos($key, $field_name) !== FALSE) {
         $key = explode(':', $key);
-        $fieldResults[$key[0]] = $result;
+        $fieldResults[$key[0]] = ($result != 0) ? ceil($result * 10) / 10 : 0;
       }
     }
 
