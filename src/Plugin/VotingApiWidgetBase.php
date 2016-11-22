@@ -92,6 +92,10 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 
+    if ($timestamp_offset == -1) {
+
+    }
+
     // Check for rollover 'never' setting.
     if (!empty($timestamp_offset) && $timestamp_offset != -1) {
       $query->condition('timestamp', time() - $timestamp_offset, '>=');
@@ -137,21 +141,21 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $config = FieldConfig::loadByName($entity_type_id, $entity_bundle, $field_name);
 
     $window_field_setting = $config->get($window_type);
+    $use_site_default = FALSE;
+
     if ($window_field_setting === NULL || $window_field_setting === -1) {
       $use_site_default = TRUE;
-    } else {
-      $use_site_default = FALSE;
     }
 
+    $window = $window_field_setting;
     if ($use_site_default) {
-      /**
+      /*
        * @var \Drupal\Core\Config\ImmutableConfig $voting_configuration
        */
       $voting_configuration = \Drupal::config('votingapi.settings');
       $window = $voting_configuration->get($window_type);
-    } else {
-      $window = $window_field_setting;
     }
+
     return $window;
   }
 
