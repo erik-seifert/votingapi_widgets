@@ -23,7 +23,10 @@ class FieldAverage extends FieldVoteResultBase {
     $total = 0;
     $votes = $this->getVotesForField($votes);
     foreach ($votes as $vote) {
-      $total += $vote->getValue();
+      $total += (int) $vote->getValue();
+    }
+    if ($total == 0) {
+      return 0;
     }
     return ($total / count($votes));
   }
