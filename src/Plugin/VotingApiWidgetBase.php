@@ -86,16 +86,13 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       $query->condition($key, $value);
     }
 
+    $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
     if (isset($voteData['vote_source'])) {
-      // Anonymous vote
+      // Anonymous vote.
       $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
-
-    } else {
-      // Registered user vote
-      $timestamp_offset = $this->getWindow('user_window', $entity_type, $entity_bundle, $field_name);
     }
 
-    // check for rollover 'never' setting
+    // Check for rollover 'never' setting.
     if (!empty($timestamp_offset)) {
       $query->condition('timestamp', time() - $timestamp_offset, '>=');
     }
@@ -138,6 +135,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
 
   public function getWindow($window_type, $entity_type_id, $entity_bundle, $field_name) {
     $config = FieldConfig::loadByName($entity_type_id, $entity_bundle, $field_name);
+
     $window_field_setting = $config->get($window_type);
     if ($window_field_setting === NULL || $window_field_setting === -1) {
       $use_site_default = TRUE;
