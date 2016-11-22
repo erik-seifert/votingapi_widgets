@@ -91,10 +91,6 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       $timestamp_offset = $this->getWindow('anonymous_window', $entity_type, $entity_bundle, $field_name);
     }
 
-    if ($timestamp_offset == -1) {
-
-    }
-
     // Check for rollover 'never' setting.
     if (!empty($timestamp_offset)) {
       $query->condition('timestamp', time() - $timestamp_offset, '>=');
