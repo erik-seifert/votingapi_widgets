@@ -23,8 +23,8 @@ class UsefulWidget extends VotingApiWidgetBase {
   /**
    * Vote form.
    */
-  public function buildForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
-    $form = $this->getForm($entity_type, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
+  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE) {
+    $form = $this->getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only);
     $build = [
       'rating' => [
         '#theme' => 'container',

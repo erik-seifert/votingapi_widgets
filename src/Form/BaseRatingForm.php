@@ -100,7 +100,7 @@ class BaseRatingForm extends ContentEntityForm {
 
     if (!$result_function) {
       $results = \Drupal::service('plugin.manager.votingapi.resultfunction')->getResults($entity->getVotedEntityType(), $entity->getVotedEntityId());
-      if (!$results[$entity->getEntityTypeId()]) {
+      if (!array_key_exists($entity->getEntityTypeId(), $results)) {
         return [];
       }
       $resultCache[$entity->getEntityTypeId()][$entity->getVotedEntityId()] = $results[$entity->getEntityTypeId()];
@@ -112,7 +112,7 @@ class BaseRatingForm extends ContentEntityForm {
     }
 
     $results = \Drupal::service('plugin.manager.votingapi.resultfunction')->getResults($entity->getVotedEntityType(), $entity->getVotedEntityId());
-    if ($results[$entity->getEntityTypeId()]) {
+    if (array_key_exists($entity->getEntityTypeId(), $results)) {
       $resultCache[$entity->getEntityTypeId()] = [
         $entity->getVotedEntityId() => $results[$entity->getEntityTypeId()],
       ];
