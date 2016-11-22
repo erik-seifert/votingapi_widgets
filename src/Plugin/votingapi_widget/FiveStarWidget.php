@@ -52,22 +52,6 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $entity) {
-    $results = $this->getResults($entity);
-    if (empty($results)) {
-      return;
-    }
-    $average = $results['vote_field_average:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
-    $count = $results['vote_field_count:' . $entity->getVotedEntityType() . '.' . $entity->field_name->value];
-
-    return [
-      '#markup' => t('@count Votes with an average of @average', ['@count' => $count, '@average' => $average]),
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getStyles() {
     return [
       'default' => t('Default'),

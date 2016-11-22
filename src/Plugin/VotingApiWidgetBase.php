@@ -3,7 +3,6 @@
 namespace Drupal\votingapi_widgets\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldConfig;
 
@@ -165,6 +164,24 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   /**
    * Generate summary.
    */
-  abstract public function getVoteSummary($form, FormStateInterface $form_state, ContentEntityInterface $vote);
+  public function getVoteSummary(ContentEntityInterface $vote) {
+    $results = $this->getResults($vote);
+    $field_name = $vote->field_name->value;
+    $fieldResults = [];
+
+    foreach ($results as $key => $result) {
+      if (strrpos($key, $field_name) !== FALSE) {
+        $key = explode(':', $key);
+        $fieldResults[$key[0]] = $result;
+      }
+    }
+
+    return [
+      '#theme' => 'votingapi_widgets_summary',
+      '#vote' => $vote,
+      '#results' => $fieldResults,
+      '#field_name' => $vote->field_name->value,
+    ];
+  }
 
 }

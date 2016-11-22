@@ -56,7 +56,7 @@ class BaseRatingForm extends ContentEntityForm {
         '#weight' => 100,
       ];
 
-      $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
+      $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
     }
 
     $form['submit'] = $form['actions']['submit'];
@@ -132,7 +132,7 @@ class BaseRatingForm extends ContentEntityForm {
     $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
     $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
-      $form['result']['#children']['result'] = $plugin->getVoteSummary($form, $form_state, $entity);
+      $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
     }
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
