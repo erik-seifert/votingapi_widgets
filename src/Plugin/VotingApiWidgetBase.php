@@ -137,6 +137,9 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     return [];
   }
 
+  /**
+   * Get time window settings.
+   */
   public function getWindow($window_type, $entity_type_id, $entity_bundle, $field_name) {
     $config = FieldConfig::loadByName($entity_type_id, $entity_bundle, $field_name);
 
