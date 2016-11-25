@@ -69,7 +69,7 @@ class VotingApiFormatter extends FormatterBase {
       'show_results' => [
         '#title' => t('Show results'),
         '#type' => 'checkbox',
-        '#default_value' => $this->getSetting('style'),
+        '#default_value' => $this->getSetting('show_results'),
       ],
     ] + parent::settingsForm($form, $form_state);
   }
@@ -97,7 +97,7 @@ class VotingApiFormatter extends FormatterBase {
     $vote_plugin = $field_settings['vote_plugin'];
     $readonly = $this->getSetting('readonly');
 
-    if (!$items->status) {
+      if ($items->status === "0") {
       $readonly = TRUE;
     }
 
