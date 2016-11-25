@@ -55,16 +55,16 @@ class VotingApiFormatter extends FormatterBase {
 
     return [
       // Implement settings form.
+	    'style' => [
+				'#title' => t('Styles'),
+				'#type' => 'select',
+				'#options' => $styles,
+				'#default_value' => $this->getSetting('style'),
+	    ],
       'readonly' => [
-        '#title' => t('Readonly'),
+				'#title' => t('Readonly'),
         '#type' => 'checkbox',
         '#default_value' => $this->getSetting('readonly'),
-      ],
-      'style' => [
-        '#title' => t('Styles'),
-        '#type' => 'select',
-        '#options' => $styles,
-        '#default_value' => $this->getSetting('style'),
       ],
       'show_results' => [
         '#title' => t('Show results'),
@@ -79,7 +79,10 @@ class VotingApiFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    // @TODO: Create a summary.
+    $summary[] = t('Styles: @styles', ['@styles' => $this->getSetting('style')]);
+    $summary[] = t('Readonly: @readonly', ['@readonly' => $this->getSetting('readonly') ? t('yes') : t('no')]);
+    $summary[] = t('Show results: @results', ['@results' => $this->getSetting('show_results') ? t('yes') : t('no')]);
+
     return $summary;
   }
 
@@ -97,7 +100,7 @@ class VotingApiFormatter extends FormatterBase {
     $vote_plugin = $field_settings['vote_plugin'];
     $readonly = $this->getSetting('readonly');
 
-      if ($items->status === "0") {
+    if ($items->status === "0") {
       $readonly = TRUE;
     }
 
