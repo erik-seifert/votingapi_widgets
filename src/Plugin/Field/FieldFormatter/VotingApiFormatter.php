@@ -24,12 +24,12 @@ class VotingApiFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'readonly'     => FALSE,
-        'style'        => 'default',
-        'show_results' => FALSE,
-        'values'       => [],
-        // Implement default settings.
-      ] + parent::defaultSettings();
+      'readonly'     => FALSE,
+      'style'        => 'default',
+      'show_results' => FALSE,
+      'values'       => [],
+      // Implement default settings.
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -54,24 +54,24 @@ class VotingApiFormatter extends FormatterBase {
     }
 
     return [
-        // Implement settings form.
-        'style'        => [
-          '#title'         => t('Styles'),
-          '#type'          => 'select',
-          '#options'       => $styles,
-          '#default_value' => $this->getSetting('style'),
-        ],
-        'readonly'     => [
-          '#title'         => t('Readonly'),
-          '#type'          => 'checkbox',
-          '#default_value' => $this->getSetting('readonly'),
-        ],
-        'show_results' => [
-          '#title'         => t('Show results'),
-          '#type'          => 'checkbox',
-          '#default_value' => $this->getSetting('show_results'),
-        ],
-      ] + parent::settingsForm($form, $form_state);
+      // Implement settings form.
+      'style'        => [
+        '#title'         => t('Styles'),
+        '#type'          => 'select',
+        '#options'       => $styles,
+        '#default_value' => $this->getSetting('style'),
+      ],
+      'readonly'     => [
+        '#title'         => t('Readonly'),
+        '#type'          => 'checkbox',
+        '#default_value' => $this->getSetting('readonly'),
+      ],
+      'show_results' => [
+        '#title'         => t('Show results'),
+        '#type'          => 'checkbox',
+        '#default_value' => $this->getSetting('show_results'),
+      ],
+    ] + parent::settingsForm($form, $form_state);
   }
 
   /**
