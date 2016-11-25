@@ -5,7 +5,3 @@ services:
   voting_api.lazy_loader:
     class: Drupal\votingapi_widgets\VotingApiLoader
     arguments: ['@plugin.manager.voting_api_widget.processor']
-  voting_api.config_subscriber:
-    class: Drupal\votingapi_widgets\EventSubscriber\FieldConfigEventSubscriber
-    tags:
-      - { name: event_subscriber }
