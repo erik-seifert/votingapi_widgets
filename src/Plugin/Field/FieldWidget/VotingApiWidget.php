@@ -26,7 +26,7 @@ class VotingApiWidget extends WidgetBase {
     $element['status'] = array(
       '#type' => 'radios',
       '#title' => t('Votes'),
-      '#default_value' => 1,
+      '#default_value' => isset($items->getValue('status')[0]['status']) ? $items->getValue('status')[0]['status'] : 1,
       '#options' => array(
         1 => t('Open'),
         0 => t('Closed'),
