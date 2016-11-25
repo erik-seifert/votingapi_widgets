@@ -24,10 +24,10 @@ class VotingApiFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-      'readonly' => FALSE,
-      'style' => 'default',
+      'readonly'     => FALSE,
+      'style'        => 'default',
       'show_results' => FALSE,
-      'values' => [],
+      'values'       => [],
       // Implement default settings.
     ] + parent::defaultSettings();
   }
@@ -55,21 +55,21 @@ class VotingApiFormatter extends FormatterBase {
 
     return [
       // Implement settings form.
-      'readonly' => [
-        '#title' => t('Readonly'),
-        '#type' => 'checkbox',
+      'style'        => [
+        '#title'         => t('Styles'),
+        '#type'          => 'select',
+        '#options'       => $styles,
+        '#default_value' => $this->getSetting('style'),
+      ],
+      'readonly'     => [
+        '#title'         => t('Readonly'),
+        '#type'          => 'checkbox',
         '#default_value' => $this->getSetting('readonly'),
       ],
-      'style' => [
-        '#title' => t('Styles'),
-        '#type' => 'select',
-        '#options' => $styles,
-        '#default_value' => $this->getSetting('style'),
-      ],
       'show_results' => [
-        '#title' => t('Show results'),
-        '#type' => 'checkbox',
-        '#default_value' => $this->getSetting('style'),
+        '#title'         => t('Show results'),
+        '#type'          => 'checkbox',
+        '#default_value' => $this->getSetting('show_results'),
       ],
     ] + parent::settingsForm($form, $form_state);
   }
@@ -79,7 +79,10 @@ class VotingApiFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    // @TODO: Create a summary.
+    $summary[] = t('Styles: @styles', ['@styles' => $this->getSetting('style')]);
+    $summary[] = t('Readonly: @readonly', ['@readonly' => $this->getSetting('readonly') ? t('yes') : t('no')]);
+    $summary[] = t('Show results: @results', ['@results' => $this->getSetting('show_results') ? t('yes') : t('no')]);
+
     return $summary;
   }
 
@@ -97,14 +100,15 @@ class VotingApiFormatter extends FormatterBase {
     $vote_plugin = $field_settings['vote_plugin'];
     $readonly = $this->getSetting('readonly');
 
-    if (!$items->status) {
+    if ($items->status === "0") {
       $readonly = TRUE;
     }
 
     $elements[] = [
       'vote_form' => [
-        '#lazy_builder' => [
-          'voting_api.lazy_loader:buildForm', [
+        '#lazy_builder'       => [
+          'voting_api.lazy_loader:buildForm',
+          [
             $vote_plugin,
             $entity->getEntityTypeId(),
             $entity->bundle(),
@@ -118,7 +122,7 @@ class VotingApiFormatter extends FormatterBase {
         ],
         '#create_placeholder' => TRUE,
       ],
-      'results' => [],
+      'results'   => [],
     ];
 
     return $elements;

@@ -3,8 +3,6 @@
 namespace Drupal\votingapi_widgets\Plugin\votingapi_widget;
 
 use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Assigns ownership of a node to a user.

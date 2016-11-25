@@ -151,11 +151,11 @@ class VotingApiField extends FieldItemBase {
       86400,
       172800,
       345600,
-      604800
+      604800,
     ];
 
     $unit_options_form = [];
-    foreach($unit_options as $option) {
+    foreach ($unit_options as $option) {
       $unit_options_form[$option] = $dateFormatter->formatInterval($option);
     }
 
@@ -165,7 +165,7 @@ class VotingApiField extends FieldItemBase {
     $form['anonymous_window'] = array(
       '#type' => 'select',
       '#title' => $this->t('Anonymous vote rollover'),
-      '#description' => $this->t('The amount of time that must pass before two anonymous votes from the same computer are considered unique. Setting this to \'never\' will eliminate most double-voting, but will make it impossible for multiple anonymous on the same computer (like internet cafe customers) from casting votes.'),
+      '#description' => $this->t("The amount of time that must pass before two anonymous votes from the same computer are considered unique. Setting this to never will eliminate most double-voting, but will make it impossible for multiple anonymous on the same computer (like internet cafe customers) from casting votes."),
       '#options' => $unit_options_form,
       '#default_value' => $this->getSetting('anonymous_window'),
     );
@@ -173,7 +173,7 @@ class VotingApiField extends FieldItemBase {
     $form['user_window'] = array(
       '#type' => 'select',
       '#title' => $this->t('Registered user vote rollover'),
-      '#description' => $this->t('The amount of time that must pass before two registered user votes from the same user ID are considered unique. Setting this to \'never\' will eliminate most double-voting for registered users.'),
+      '#description' => $this->t("The amount of time that must pass before two registered user votes from the same user ID are considered unique. Setting this to never will eliminate most double-voting for registered users."),
       '#options' => $unit_options_form,
       '#default_value' => $this->getSetting('user_window'),
     );
