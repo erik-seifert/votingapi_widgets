@@ -32,6 +32,12 @@ class VotingApiWidget extends WidgetBase {
         0 => t('Closed'),
       ),
     );
+    $entity_type = $this->fieldDefinition->getTargetEntityTypeId();
+    $bundle = $this->fieldDefinition->getTargetBundle();
+    $field_name = $this->fieldDefinition->getName();
+    $permission = 'edit voting status on ' . $entity_type . ':' . $bundle . ':' . $field_name;
+    $account = \Drupal::currentUser();
+    $element['status']['#access'] = $account->hasPermission($permission);
     return $element;
   }
 
