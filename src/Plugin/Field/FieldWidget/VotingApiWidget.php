@@ -66,12 +66,13 @@ class VotingApiWidget extends WidgetBase {
     $options = [
       VotingApiField::EMPTY_VALUE => t('None'),
     ];
+
     $options += $plugin->getValues();
     $element['value'] = [
       '#type' => 'select',
       '#title' => t('Your vote'),
       '#options' => $options,
-      '#access' => ($this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
+      '#access' => ($items->getEntity()->isNew() && $this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
     ];
 
     return $element;
