@@ -9,6 +9,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
+use Drupal\votingapi\Entity\Vote;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
@@ -22,6 +23,8 @@ use Drupal\votingapi\Entity\VoteType;
  * )
  */
 class VotingApiField extends FieldItemBase {
+
+  const EMPTY_VALUE = 'NONE';
 
   /**
    * {@inheritdoc}
@@ -61,6 +64,10 @@ class VotingApiField extends FieldItemBase {
     $properties['status'] = DataDefinition::create('integer')
       ->setLabel(t('Vote status'))
       ->setRequired(TRUE);
+
+    $properties['value'] = DataDefinition::create('any')
+      ->setLabel(t('Vote initial'))
+      ->setRequired(FALSE);
 
     return $properties;
   }
@@ -185,6 +192,29 @@ class VotingApiField extends FieldItemBase {
    */
   public function isEmpty() {
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave($update) {
+    if ($update) {
+      return;
+    }
+    $entity = $this->getEntity();
+    $field_name = $this->getFieldDefinition()->getName();
+    $bundle = $this->getFieldDefinition()->getSetting('vote_type');
+
+    if ($entity->{$field_name}->value != self::EMPTY_VALUE) {
+      $vote = Vote::create([
+        'type' => $bundle,
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity_id' => $entity->id(),
+        'value' => $entity->{$field_name}->value,
+        'field_name' => $field_name,
+      ]);
+      $vote->save();
+    }
   }
 
 }

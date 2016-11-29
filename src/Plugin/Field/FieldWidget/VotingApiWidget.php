@@ -5,6 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\votingapi_widgets\Plugin\Field\FieldType\VotingApiField;
 
 /**
  * Plugin implementation of the 'voting_api_widget' widget.
@@ -18,6 +19,25 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class VotingApiWidget extends WidgetBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return ['show_initial_vote' => 0];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $form['show_initial_vote'] = [
+      '#type' => 'select',
+      '#options' => [0 => t('Show not initial voting'), 1 => t('Show initial voting')],
+      '#default_value' => $this->getSetting('show_initial_vote'),
+    ];
+    return $form;
+  }
 
   /**
    * {@inheritdoc}
@@ -38,6 +58,22 @@ class VotingApiWidget extends WidgetBase {
     $permission = 'edit voting status on ' . $entity_type . ':' . $bundle . ':' . $field_name;
     $account = \Drupal::currentUser();
     $element['status']['#access'] = $account->hasPermission($permission);
+
+    $plugin = $this->fieldDefinition->getSetting('vote_plugin');
+    $plugin = \Drupal::service('plugin.manager.voting_api_widget.processor')->createInstance($plugin);
+
+    $permission = 'vote on ' . $entity_type . ':' . $bundle . ':' . $field_name;
+    $options = [
+      VotingApiField::EMPTY_VALUE => t('None'),
+    ];
+    $options += $plugin->getValues();
+    $element['value'] = [
+      '#type' => 'select',
+      '#title' => t('Your vote'),
+      '#options' => $options,
+      '#access' => ($this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
+    ];
+
     return $element;
   }
 
