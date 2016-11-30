@@ -22,7 +22,7 @@ class BaseRatingForm extends ContentEntityForm {
     $form = parent::buildForm($form, $form_state);
     $entity = $this->getEntity();
     $result_function = $this->getResultFunction($form_state);
-    $results = (int)$this->getResults($result_function);
+    $results = $this->getResults($result_function);
     $options = $form_state->get('options');
     $form_id = Html::getUniqueId('vote-form');
     $plugin = $form_state->get('plugin');
