@@ -22,6 +22,7 @@ class BaseRatingForm extends ContentEntityForm {
     $form = parent::buildForm($form, $form_state);
     $entity = $this->getEntity();
     $result_function = $this->getResultFunction($form_state);
+    $results = (int)$this->getResults($result_function);
     $options = $form_state->get('options');
     $form_id = Html::getUniqueId('vote-form');
     $plugin = $form_state->get('plugin');
@@ -36,17 +37,17 @@ class BaseRatingForm extends ContentEntityForm {
       '#options' => $options,
       '#attributes' => [
         'autocomplete' => 'off',
-        'data-default-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
+        'data-default-value' => $results ?: -1,
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
-      '#default_value' => $this->getResults($result_function),
+      '#default_value' => $results,
     ];
 
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
 
-    if ($form_state->get('show_results')) {
+    if ($form_state->get('show_results') && $results > 0) {
       $form['result'] = [
         '#theme' => 'container',
         '#attributes' => [
