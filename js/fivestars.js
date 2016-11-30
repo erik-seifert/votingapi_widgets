@@ -6,7 +6,6 @@
 (function ($, Drupal) {
   Drupal.behaviors.fiveStarRating = {
     attach: function (context, settings) {
-      console.log('HERE');
      $('body').find('.fivestar').each(function () {
       var $this = $(this);
       var $select = $this.find('select');
