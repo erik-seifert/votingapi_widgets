@@ -6,6 +6,7 @@
 (function ($, Drupal) {
   Drupal.behaviors.fiveStarRating = {
     attach: function (context, settings) {
+      console.log('HERE');
      $('body').find('.fivestar').each(function () {
       var $this = $(this);
       var $select = $this.find('select');
@@ -16,9 +17,9 @@
       }
       var options = {
         theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
-        showSelectedRating: true,
         initialRating: value,
         allowEmpty: true,
+        emptyValue: '',
         readonly: ($select.attr('disabled')) ? true : false,
         onSelect: function (value, text) {
           if (isPreview) {

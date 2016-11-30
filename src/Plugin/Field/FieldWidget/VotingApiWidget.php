@@ -64,7 +64,7 @@ class VotingApiWidget extends WidgetBase {
 
     $permission = 'vote on ' . $entity_type . ':' . $bundle . ':' . $field_name;
     $options = [
-      VotingApiField::EMPTY_VALUE => t('None'),
+      '' => t('None'),
     ];
 
     $options += $plugin->getValues();
@@ -72,7 +72,8 @@ class VotingApiWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => t('Your vote'),
       '#options' => $options,
-      '#access' => ($items->getEntity()->isNew() && $this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
+      '#default_value' => '',
+      '#access' => ($this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
     ];
 
     $plugin->getInitialVotingElement($element);

@@ -24,8 +24,6 @@ use Drupal\votingapi\Entity\Vote;
  */
 class VotingApiField extends FieldItemBase {
 
-  const EMPTY_VALUE = 'NONE';
-
   /**
    * {@inheritdoc}
    */
@@ -204,8 +202,7 @@ class VotingApiField extends FieldItemBase {
     $entity = $this->getEntity();
     $field_name = $this->getFieldDefinition()->getName();
     $bundle = $this->getFieldDefinition()->getSetting('vote_type');
-
-    if ($entity->{$field_name}->value != self::EMPTY_VALUE) {
+    if (!empty($entity->{$field_name}->value)) {
       $vote = Vote::create([
         'type' => $bundle,
         'entity_type' => $entity->getEntityTypeId(),
