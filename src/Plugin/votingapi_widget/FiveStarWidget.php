@@ -50,6 +50,21 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * {@inheritdoc}
    */
+  public function getInitialVotingElement(array &$form) {
+    $form['value']['#prefix'] = '<div class="votingapi-widgets fivestar">';
+    $form['value']['#attached']  = [
+      'library' => ['votingapi_widgets/fivestar'],
+    ];
+    $form['value']['#suffix'] = '</div>';
+    $form['value']['#attributes'] = [
+      'data-style' => 'default',
+      'data-is-edit' => 1,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getStyles() {
     return [
       'default' => t('Default'),

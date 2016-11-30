@@ -11,8 +11,8 @@ use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
  *   id = "useful",
  *   label = @Translation("Usefull rating"),
  *   values = {
- *    -1 = @Translation("Poor"),
- *    1 = @Translation("Not so poor"),
+ *    -1 = @Translation("Not useful"),
+ *    1 = @Translation("Useful"),
  *   },
  * )
  */
@@ -42,6 +42,17 @@ class UsefulWidget extends VotingApiWidgetBase {
       ],
     ];
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getInitialVotingElement(array &$form) {
+    $form['value']['#prefix'] = '<div class="votingapi-widgets useful">';
+    $form['value']['#attached']  = [
+      'library' => ['votingapi_widgets/useful'],
+    ];
+    $form['value']['#suffix'] = '</div>';
   }
 
   /**
