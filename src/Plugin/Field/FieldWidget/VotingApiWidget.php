@@ -75,6 +75,8 @@ class VotingApiWidget extends WidgetBase {
       '#access' => ($items->getEntity()->isNew() && $this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,
     ];
 
+    $plugin->getInitialVotingElement($element);
+
     return $element;
   }
 

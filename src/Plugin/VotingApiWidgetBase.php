@@ -40,6 +40,11 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
+   * Get initial element.
+   */
+  abstract public function getInitialVotingElement(array &$form);
+
+  /**
    * Get results.
    */
   public function canVote($vote, $account = FALSE) {
