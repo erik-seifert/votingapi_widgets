@@ -10,6 +10,7 @@
       var $this = $(this);
       var $select = $this.find('select');
       var value = $select.data('default-value');
+      var isPreview = $select.data('is-edit');
       var style = settings.votingapi_widgets.fivestar.style;
       if (!value) {
         value = -1;
@@ -19,8 +20,12 @@
         showSelectedRating: true,
         initialRating: value,
         allowEmpty: true,
+        emptyValue: '',
         readonly: settings.votingapi_widgets.fivestar.read_only ? true : false,
         onSelect: function (value, text) {
+          if (isPreview) {
+            return;
+          }
           $this.find('select').barrating('readonly', true);
           $this.find('input[type=submit]').trigger('click');
           $this.find('a').addClass('disabled');
