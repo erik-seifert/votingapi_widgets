@@ -5,3 +5,9 @@ services:
   voting_api.lazy_loader:
     class: Drupal\votingapi_widgets\VotingApiLoader
     arguments: ['@plugin.manager.voting_api_widget.processor']
+  votingapi_widgets.form_builder:
+      class: Drupal\votingapi_widgets\Form\VotingApiWidgetsFormBuilder
+      arguments: ['@form_validator', '@form_submitter', '@form_cache', '@module_handler', '@event_dispatcher', '@request_stack', '@class_resolver', '@element_info', '@theme.manager', '@?csrf_token']
+  votingapi_widgets.entity_form_builder:
+    class: Drupal\Core\Entity\EntityFormBuilder
+    arguments: ['@entity.manager', '@votingapi_widgets.form_builder']
