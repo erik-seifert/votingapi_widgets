@@ -27,6 +27,7 @@
           $this.find('select').barrating('readonly', true);
           $this.find('input[type=submit]').trigger('click');
           $this.find('a').addClass('disabled');
+          $this.trigger('fivestar.change');
         },
       };
       $this.find('select').once('processed').barrating('show', options);
