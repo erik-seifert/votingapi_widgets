@@ -152,7 +152,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $window_field_setting = $config->getSetting($window_type);
     $use_site_default = FALSE;
 
-    if ($window_field_setting === NULL || $window_field_setting === -1) {
+    if ($window_field_setting === NULL || $window_field_setting === "-1") {
       $use_site_default = TRUE;
     }
 
