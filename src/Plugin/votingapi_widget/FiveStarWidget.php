@@ -33,6 +33,7 @@ class FiveStarWidget extends VotingApiWidgetBase {
           'class' => [
             'votingapi-widgets',
             'fivestar',
+            $read_only ? 'read_only' : '',
           ],
         ],
         '#children' => [
