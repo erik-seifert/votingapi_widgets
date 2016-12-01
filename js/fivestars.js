@@ -10,21 +10,22 @@
       var $this = $(this);
       var $select = $this.find('select');
       var value = $select.data('default-value');
+      var style = settings.votingapi_widgets.fivestar.style;
       if (!value) {
         value = -1;
       }
       var options = {
-        theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
+        theme: style == 'default' ? 'css-stars' : style,
         showSelectedRating: true,
         initialRating: value,
         allowEmpty: true,
-        readonly: ($select.attr('disabled')) ? true : false,
+        readonly: settings.votingapi_widgets.fivestar.read_only ? true : false,
         onSelect: function (value, text) {
           $this.find('select').barrating('readonly', true);
           $this.find('input[type=submit]').trigger('click');
           $this.find('a').addClass('disabled');
           $this.trigger('fivestar.change');
-        },
+        }
       };
       $this.find('select').once('processed').barrating('show', options);
       $this.find('input[type=submit]').hide();
