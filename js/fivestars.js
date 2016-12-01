@@ -10,7 +10,7 @@
       var $this = $(this);
       var $select = $this.find('select');
       var value = $select.data('default-value');
-      var isPreview = $select.data('is-edit');
+      var isPreview = settings.votingapi_widgets.fivestar.is_preview;
       var style = settings.votingapi_widgets.fivestar.style;
       if (!value) {
         value = -1;
