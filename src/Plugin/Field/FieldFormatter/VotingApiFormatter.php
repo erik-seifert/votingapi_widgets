@@ -28,6 +28,7 @@ class VotingApiFormatter extends FormatterBase {
       'style'        => 'default',
       'show_results' => FALSE,
       'values'       => [],
+      'show_own_vote'=> FALSE,
       // Implement default settings.
     ] + parent::defaultSettings();
   }
@@ -71,6 +72,12 @@ class VotingApiFormatter extends FormatterBase {
         '#type'          => 'checkbox',
         '#default_value' => $this->getSetting('show_results'),
       ],
+      'show_own_vote' => [
+        '#title'         => t('Show own vote'),
+        '#description'   => $this->t('Show own cast vote instead of results. (Useful on add/ edit forms with rate widget).'),
+        '#type'          => 'checkbox',
+        '#default_value' => $this->getSetting('show_own_vote'),
+      ],
     ] + parent::settingsForm($form, $form_state);
   }
 
@@ -82,6 +89,7 @@ class VotingApiFormatter extends FormatterBase {
     $summary[] = t('Styles: @styles', ['@styles' => $this->getSetting('style')]);
     $summary[] = t('Readonly: @readonly', ['@readonly' => $this->getSetting('readonly') ? t('yes') : t('no')]);
     $summary[] = t('Show results: @results', ['@results' => $this->getSetting('show_results') ? t('yes') : t('no')]);
+    $summary[] = t('Show own vote: @show_own_vote', ['@show_own_vote' => $this->getSetting('show_own_vote') ? t('yes') : t('no')]);
 
     return $summary;
   }
@@ -99,6 +107,7 @@ class VotingApiFormatter extends FormatterBase {
     $vote_type = $field_settings['vote_type'];
     $vote_plugin = $field_settings['vote_plugin'];
     $readonly = $this->getSetting('readonly');
+    $show_own_vote = $this->getSetting('show_own_vote') ? TRUE : FALSE;
 
     if ($items->status === "0") {
       $readonly = TRUE;
@@ -118,6 +127,7 @@ class VotingApiFormatter extends FormatterBase {
             $this->getSetting('style'),
             $this->getSetting('show_results'),
             $readonly,
+            $show_own_vote,
           ],
         ],
         '#create_placeholder' => TRUE,

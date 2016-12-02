@@ -54,10 +54,19 @@ class BaseRatingForm extends ContentEntityForm {
       '#attributes' => [
         'autocomplete' => 'off',
         'data-result-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
+        'data-vote-value' => $entity->getValue(),
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
-      '#default_value' => $this->getResults($result_function),
     ];
+
+    if (!$form_state->get('show_own_vote')) {
+      $form['value']['#attributes']['data-show-own-vote'] = 'false';
+      $form['value']['#default_value'] = $this->getResults($result_function);
+    } else {
+      $form['value']['#attributes']['data-show-own-vote'] = 'true';
+      $form['value']['#default_value'] = (int) $entity->getValue();
+    }
+
 
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
@@ -146,8 +155,15 @@ class BaseRatingForm extends ContentEntityForm {
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
-    // @TODO: implement setting to choose whether vote result is set or result.
-    $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
+    if (!$form_state->get('show_own_vote')) {
+      $form['value']['#attributes']['data-show-own-vote'] = 'false';
+      $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
+    } else {
+      $form['value']['#attributes']['data-show-own-vote'] = 'true';
+      $form['value']['#default_value'] = (int) $entity->getValue();
+    }
+
+    $form['value']['#attributes']['data-vote-value'] = $entity->getValue();
     $form['value']['#attributes']['data-result-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
       $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);

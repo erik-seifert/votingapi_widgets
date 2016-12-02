@@ -31,7 +31,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
    * @return \Drupal\Core\Form\FormInterface
    *   configured vote form
    */
-  public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
+  public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only, $show_own_vote) {
     $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
     /*
      * @TODO: remove custom entity_form_builder once
@@ -42,6 +42,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
       'options' => $this->getPluginDefinition()['values'],
       'style' => $style,
       'show_results' => $show_results,
+      'show_own_vote' => $show_own_vote,
       'plugin' => $this,
       // @TODO: following keys can be removed once #766146 is fixed.
       'entity_type' => $entity_type,

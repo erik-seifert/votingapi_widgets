@@ -10,7 +10,9 @@
       var $this = $(this);
       var $select = $this.find('select');
       var value = $select.data('result-value');
+      var vote_own_value = $select.data('vote-value');
       var isEdit = $select.data('is-edit');
+      var show_own_vote = $select.data('show-own-vote');
       if (isEdit) {
         value = $select.val();
       }
@@ -19,7 +21,7 @@
       }
       var options = {
         theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
-        initialRating: value,
+        initialRating: show_own_vote ? vote_own_value : value,
         allowEmpty: true,
         emptyValue: '',
         readonly: ($select.attr('disabled')) ? true : false,
