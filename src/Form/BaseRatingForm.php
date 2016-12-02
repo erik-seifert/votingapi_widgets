@@ -130,7 +130,7 @@ class BaseRatingForm extends ContentEntityForm {
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
     $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
-    $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
+    $form['value']['#attributes']['data-result-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
       $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
     }
