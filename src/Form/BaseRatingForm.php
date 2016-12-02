@@ -36,7 +36,7 @@ class BaseRatingForm extends ContentEntityForm {
       '#options' => $options,
       '#attributes' => [
         'autocomplete' => 'off',
-        'data-default-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
+        'data-result-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
       '#default_value' => $this->getResults($result_function),

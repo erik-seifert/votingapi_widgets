@@ -9,8 +9,11 @@
      $('body').find('.fivestar').each(function () {
       var $this = $(this);
       var $select = $this.find('select');
-      var value = $select.data('default-value');
-      var isPreview = $select.data('is-edit');
+      var value = $select.data('result-value');
+      var isEdit = $select.data('is-edit');
+      if (isEdit) {
+        value = $select.val();
+      }
       if (!value) {
         value = -1;
       }
@@ -21,7 +24,7 @@
         emptyValue: '',
         readonly: ($select.attr('disabled')) ? true : false,
         onSelect: function (value, text) {
-          if (isPreview) {
+          if (isEdit) {
             return;
           }
           $this.find('select').barrating('readonly', true);
