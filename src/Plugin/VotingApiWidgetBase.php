@@ -4,9 +4,7 @@ namespace Drupal\votingapi_widgets\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Form\FormInterface;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\votingapi\Entity\Vote;
 
 /**
  * Base class for Voting api widget plugins.
@@ -28,11 +26,14 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * @return FormInterface
+   * Gets the widget form as configured for given parameters.
+   *
+   * @return \Drupal\Core\Form\FormInterface
+   *   configured vote form
    */
   public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
     $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
-    /**
+    /*
      * @TODO: remove custom entity_form_builder once
      *   https://www.drupal.org/node/766146 is fixed.
      */
@@ -57,7 +58,10 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   abstract public function getInitialVotingElement(array &$form);
 
   /**
-   * Get results.
+   * Checks whether currentUser is allowed to vote.
+   *
+   * @return bool
+   *   True if user is allowed to vote
    */
   public function canVote($vote, $account = FALSE) {
     if (!$account) {
@@ -79,7 +83,13 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * @return Vote
+   * Returns a Vote entity.
+   *
+   * Checks whether a vote was already done and if this vote should be reused
+   * instead of adding a new one.
+   *
+   * @return \Drupal\votingapi\Entity\Vote
+   *  Vote entity
    */
   public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
