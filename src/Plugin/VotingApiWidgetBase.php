@@ -4,7 +4,9 @@ namespace Drupal\votingapi_widgets\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormInterface;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\votingapi\Entity\Vote;
 
 /**
  * Base class for Voting api widget plugins.
@@ -26,7 +28,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * Get results.
+   * @return FormInterface
    */
   public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
     $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
@@ -77,7 +79,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * Get results.
+   * @return Vote
    */
   public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
