@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
 use Drupal\votingapi\Entity\Vote;
+use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
@@ -196,20 +197,26 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public function postSave($update) {
-    if ($update) {
-      return;
-    }
     $entity = $this->getEntity();
     $field_name = $this->getFieldDefinition()->getName();
-    $bundle = $this->getFieldDefinition()->getSetting('vote_type');
-    if (!empty($entity->{$field_name}->value)) {
-      $vote = Vote::create([
-        'type' => $bundle,
-        'entity_type' => $entity->getEntityTypeId(),
-        'entity_id' => $entity->id(),
-        'value' => $entity->{$field_name}->value,
-        'field_name' => $field_name,
-      ]);
+    $vote_type = $this->getFieldDefinition()->getSetting('vote_type');
+    $plugin = $this->getFieldDefinition()->getSetting('vote_plugin');
+    /**
+     * @var VotingApiWidgetBase $plugin
+     */
+    $plugin = \Drupal::service('plugin.manager.voting_api_widget.processor')
+      ->createInstance($plugin);
+
+    $vote_value = $entity->{$field_name}->value;
+    if (!empty($vote_value)) {
+      $vote = $plugin->getEntityForVoting(
+        $entity->getEntityTypeId(),
+        $entity->bundle(),
+        $entity->id(),
+        $vote_type,
+        $field_name
+      );
+      $vote->setValue($vote_value);
       $vote->save();
     }
   }
