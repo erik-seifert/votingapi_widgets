@@ -13,6 +13,23 @@ use Drupal\Component\Utility\Html;
  */
 class BaseRatingForm extends ContentEntityForm {
 
+  public function getFormId() {
+    $form_id = parent::getFormId();
+    $entity = $this->getEntity();
+    $voted_entity_type = $entity->getVotedEntityType();
+    $voted_entity_id = $entity->getVotedEntityId();
+    $voted_entity = $this->entityManager->getStorage($voted_entity_type)->load($voted_entity_id);
+
+    $additional_form_id_parts = [];
+    $additional_form_id_parts[] = $voted_entity->getEntityTypeId();
+    $additional_form_id_parts[] = $voted_entity->bundle();
+    $additional_form_id_parts[] = $voted_entity->id();
+    $additional_form_id_parts[] = $entity->bundle();
+    $additional_form_id_parts[] = $entity->field_name->value;
+    $form_id = implode('_', $additional_form_id_parts) . '__' . $form_id;
+    return $form_id;
+  }
+
   public $plugin;
 
   /**
@@ -129,6 +146,7 @@ class BaseRatingForm extends ContentEntityForm {
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
+    // @TODO: implement setting to choose whether vote result is set or result.
     $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
     $form['value']['#attributes']['data-result-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {

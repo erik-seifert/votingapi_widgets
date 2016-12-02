@@ -37,7 +37,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
      * @TODO: remove custom entity_form_builder once
      *   https://www.drupal.org/node/766146 is fixed.
      */
-    return \Drupal::service('votingapi_widgets.entity_form_builder')->getForm($vote, 'votingapi_' . $this->getPluginId(), [
+    return \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_' . $this->getPluginId(), [
       'read_only' => $read_only,
       'options' => $this->getPluginDefinition()['values'],
       'style' => $style,
