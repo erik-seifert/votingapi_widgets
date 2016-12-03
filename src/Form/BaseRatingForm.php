@@ -67,7 +67,6 @@ class BaseRatingForm extends ContentEntityForm {
       $form['value']['#default_value'] = (int) $entity->getValue();
     }
 
-
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
