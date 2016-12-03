@@ -88,4 +88,17 @@ class VotingApiWidget extends WidgetBase {
     return $element;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+    $summary[] = $this->t(
+      'Show initial vote: @show_initial_vote',
+      ['@show_initial_vote' => $this->getSetting('show_initial_vote') ? $this->t('yes') : $this->t('no')]
+    );
+
+    return $summary;
+  }
+
 }
