@@ -50,6 +50,14 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * {@inheritdoc}
    */
+  public function attachLibrary($element) {
+    $element['#attached']['library'][] = 'votingapi_widgets/fivestar';
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getInitialVotingElement(array &$form) {
     $form['value']['#prefix'] = '<div class="votingapi-widgets fivestar">';
     $form['value']['#attached']  = [

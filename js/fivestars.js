@@ -6,31 +6,25 @@
 (function ($, Drupal) {
   Drupal.behaviors.fiveStarRating = {
     attach: function (context, settings) {
-     $('body').find('.fivestar').each(function () {
-      var $this = $(this);
-      var $select = $this.find('select');
-      var value = $select.data('default-value');
-      var isPreview = $select.data('is-edit');
-      if (!value) {
-        value = -1;
-      }
+     $(context).find('.form-type-rate .fivestar').each(function () {
+      var $select = $(this);
       var options = {
-        theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
-        initialRating: value,
-        allowEmpty: true,
-        emptyValue: '',
+        theme: 'fontawesome-stars-o',
+        showValues: false,
+        showSelectedRating: false,
         readonly: ($select.attr('disabled')) ? true : false,
-        onSelect: function (value, text) {
-          if (isPreview) {
-            return;
-          }
-          $this.find('select').barrating('readonly', true);
-          $this.find('input[type=submit]').trigger('click');
-          $this.find('a').addClass('disabled');
-        },
       };
-      $this.find('select').once('processed').barrating('show', options);
-      $this.find('input[type=submit]').hide();
+      if ($select.data('rate-empty-value') !== undefined) {
+        options.deselectable = false;
+        options.allowEmpty = true;
+        options.emptyValue = $select.data('rate-empty-value');
+        $select.bind('clear',function(){
+          $(this).barrating('clear');
+        })
+      }
+      $select.once('processed').each(function(){
+        $(this).barrating('show', options);;
+      })
     });
     }
   };

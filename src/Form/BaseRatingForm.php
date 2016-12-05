@@ -15,6 +15,10 @@ class BaseRatingForm extends ContentEntityForm {
 
   public $plugin;
 
+  protected function actions(array $form, FormStateInterface $form_state) {
+    return [];
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -22,57 +26,36 @@ class BaseRatingForm extends ContentEntityForm {
     $form = parent::buildForm($form, $form_state);
     $entity = $this->getEntity();
     $result_function = $this->getResultFunction($form_state);
-    $options = $form_state->get('options');
     $form_id = Html::getUniqueId('vote-form');
+    $rate_id = Html::getUniqueId($form_id);
     $plugin = $form_state->get('plugin');
 
     $form['#cache']['contexts'][] = 'user.permissions';
     $form['#cache']['contexts'][] = 'user.roles:authenticated';
 
     $form['#attributes']['id'] = $form_id;
-
     $form['value'] = [
-      '#type' => 'select',
-      '#options' => $options,
+      '#prefix' => '<div id="' . $rate_id . '">',
+      '#suffix' => '</div>',
+      '#type' => 'rate',
+      '#show_results' => TRUE,
+      '#required' => FALSE,
       '#attributes' => [
         'autocomplete' => 'off',
-        'data-default-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
-        'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
+      '#ajax' => [
+        'effect' => 'fade',
+        'callback' => [$this, 'save'],
+      ],
+      '#allow_empty' => TRUE,
+      '#empty_value' => '--------',
+      '#vote' => $entity,
+      '#readonly' => (!$form_state->get('read_only') && $plugin->canVote($entity)) ? FALSE : TRUE,
+      '#plugin' => $plugin->getPluginId(),
       '#default_value' => $this->getResults($result_function),
     ];
 
-    if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
-      $form['value']['#attributes']['disabled'] = 'disabled';
-    }
-
-    if ($form_state->get('show_results')) {
-      $form['result'] = [
-        '#theme' => 'container',
-        '#attributes' => [
-          'class' => ['vote-result'],
-        ],
-        '#children' => [],
-        '#weight' => 100,
-      ];
-
-      $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
-    }
-
-    $form['submit'] = $form['actions']['submit'];
-    $form['actions']['#access'] = FALSE;
-
-    $form['submit'] += [
-      '#type' => 'button',
-      '#ajax' => [
-        'callback' => array($this, 'ajaxSubmit'),
-        'event' => 'click',
-        'wrapper' => $form_id,
-        'progress' => [
-          'method' => 'replace',
-        ],
-      ],
-    ];
+    $form_state->setCached(FALSE);
     return $form;
   }
 
@@ -122,32 +105,13 @@ class BaseRatingForm extends ContentEntityForm {
   }
 
   /**
-   * Ajax submit handler.
-   */
-  public function ajaxSubmit(array $form, FormStateInterface $form_state) {
-    $this->save($form, $form_state);
-    $result_function = $this->getResultFunction($form_state);
-    $plugin = $form_state->get('plugin');
-    $entity = $this->getEntity();
-    $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
-    $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
-    if ($form_state->get('show_results')) {
-      $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
-    }
-    if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
-      $form['value']['#attributes']['disabled'] = 'disabled';
-    }
-
-    $form_state->setRebuild(TRUE);
-    return $form;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $status = parent::save($form, $form_state);
-    return $status;
+    $this->entity->setValue($form_state->getValue('value'));
+    parent::save($form, $form_state);
+    $form_state->setRebuild(TRUE);
+    return $form;
   }
 
 }

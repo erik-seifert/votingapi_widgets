@@ -1,0 +1,8 @@
+
+votingapi_widgets.default_controller_hello:
+  path: '/votingapi_widgets/hello'
+  defaults:
+    _controller: '\Drupal\votingapi_widgets\Controller\DefaultController::hello'
+    _title: 'test'
+  requirements:
+    _permission: 'access content'

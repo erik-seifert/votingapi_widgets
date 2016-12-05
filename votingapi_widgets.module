@@ -94,6 +94,9 @@ function votingapi_widgets_theme_suggestions_alter(array &$suggestions, array $v
  */
 function votingapi_widgets_theme() {
   return [
+    'rate' => [
+      'render element' => 'element',
+    ],
     'votingapi_widgets_summary' => [
       'variables' => [
         'results' => [],

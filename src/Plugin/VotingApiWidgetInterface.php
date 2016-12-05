@@ -19,4 +19,9 @@ interface VotingApiWidgetInterface extends PluginInspectionInterface {
    */
   public function getStyles();
 
+  /**
+   * Get available styles.
+   */
+  public function attachLibrary($element);
+
 }
