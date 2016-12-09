@@ -154,12 +154,13 @@ class BaseRatingForm extends ContentEntityForm {
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
+
+    $form['value']['#attributes']['data-show-own-vote'] = 'true';
+    $form['value']['#default_value'] = (int) $entity->getValue();
+
     if (!$form_state->get('show_own_vote')) {
       $form['value']['#attributes']['data-show-own-vote'] = 'false';
       $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
-    } else {
-      $form['value']['#attributes']['data-show-own-vote'] = 'true';
-      $form['value']['#default_value'] = (int) $entity->getValue();
     }
 
     $form['value']['#attributes']['data-vote-value'] = $entity->getValue();
