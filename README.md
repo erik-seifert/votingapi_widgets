@@ -1,5 +1,7 @@
 # votingapi_widgets
 
+![Logo](https://www.drupal.org/files/styles/grid-3/public/project-images/Drupal8_Voting_API_Widgets_Logo_DrupalORG.png)
+
 Upon installation it is important to save the VotingAPI config at least once, due to a bug in the default shipped config
  of VotingAPI alpha3. That way all global configs are available.
 
@@ -8,3 +10,6 @@ Upon installation it is important to save the VotingAPI config at least once, du
 Sponsored by b-connect
 
 ![b-connect](https://b-connect.de/sites/all/themes/bctheme/logo.png)
+
+[Hubert Burda Media](https://www.drupal.org/hubert-burda-media)
+sponsoring development
