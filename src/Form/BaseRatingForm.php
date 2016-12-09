@@ -59,12 +59,12 @@ class BaseRatingForm extends ContentEntityForm {
       ],
     ];
 
+    $form['value']['#attributes']['data-show-own-vote'] = 'true';
+    $form['value']['#default_value'] = (int) $entity->getValue();
+
     if (!$form_state->get('show_own_vote')) {
       $form['value']['#attributes']['data-show-own-vote'] = 'false';
       $form['value']['#default_value'] = $this->getResults($result_function);
-    } else {
-      $form['value']['#attributes']['data-show-own-vote'] = 'true';
-      $form['value']['#default_value'] = (int) $entity->getValue();
     }
 
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
@@ -93,6 +93,9 @@ class BaseRatingForm extends ContentEntityForm {
         'callback' => array($this, 'ajaxSubmit'),
         'event' => 'click',
         'wrapper' => $form_id,
+        'progress' => [
+          'type' => NULL,
+        ],
       ],
     ];
     return $form;
