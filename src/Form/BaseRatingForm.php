@@ -93,9 +93,6 @@ class BaseRatingForm extends ContentEntityForm {
         'callback' => array($this, 'ajaxSubmit'),
         'event' => 'click',
         'wrapper' => $form_id,
-        'progress' => [
-          'method' => 'replace',
-        ],
       ],
     ];
     return $form;
