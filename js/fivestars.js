@@ -9,21 +9,24 @@
      $('body').find('.fivestar').each(function () {
       var $this = $(this);
       var $select = $this.find('select');
-      var value = $select.data('default-value');
-      var isPreview = settings.votingapi_widgets.fivestar.is_preview;
-      var style = settings.votingapi_widgets.fivestar.style;
+      var value = $select.data('result-value');
+      var vote_own_value = $select.data('vote-value');
+      var isEdit = $select.data('is-edit');
+      var show_own_vote = $select.data('show-own-vote');
+      if (isEdit) {
+        value = $select.val();
+      }
       if (!value) {
         value = -1;
       }
       var options = {
-        theme: style == 'default' ? 'css-stars' : style,
-        showSelectedRating: true,
-        initialRating: value,
+        theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
+        initialRating: show_own_vote ? vote_own_value : value,
         allowEmpty: true,
         emptyValue: '',
-        readonly: settings.votingapi_widgets.fivestar.read_only ? true : false,
+        readonly: ($select.attr('disabled')) ? true : false,
         onSelect: function (value, text) {
-          if (isPreview) {
+          if (isEdit) {
             return;
           }
           $this.find('select').barrating('readonly', true);

@@ -26,16 +26,30 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * Get results.
+   * Gets the widget form as configured for given parameters.
+   *
+   * @return \Drupal\Core\Form\FormInterface
+   *   configured vote form
    */
-  public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only) {
+  public function getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only, $show_own_vote) {
     $vote = $this->getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name);
+    /*
+     * @TODO: remove custom entity_form_builder once
+     *   https://www.drupal.org/node/766146 is fixed.
+     */
     return \Drupal::service('entity.form_builder')->getForm($vote, 'votingapi_' . $this->getPluginId(), [
       'read_only' => $read_only,
       'options' => $this->getPluginDefinition()['values'],
       'style' => $style,
       'show_results' => $show_results,
+      'show_own_vote' => $show_own_vote,
       'plugin' => $this,
+      // @TODO: following keys can be removed once #766146 is fixed.
+      'entity_type' => $entity_type,
+      'entity_bundle' => $entity_bundle,
+      'entity_id' => $entity_id,
+      'vote_type' => $vote_type,
+      'field_name' => $field_name,
     ]);
   }
 
@@ -45,7 +59,10 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   abstract public function getInitialVotingElement(array &$form);
 
   /**
-   * Get results.
+   * Checks whether currentUser is allowed to vote.
+   *
+   * @return bool
+   *   True if user is allowed to vote
    */
   public function canVote($vote, $account = FALSE) {
     if (!$account) {
@@ -67,7 +84,13 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
   }
 
   /**
-   * Get results.
+   * Returns a Vote entity.
+   *
+   * Checks whether a vote was already done and if this vote should be reused
+   * instead of adding a new one.
+   *
+   * @return \Drupal\votingapi\Entity\Vote
+   *  Vote entity
    */
   public function getEntityForVoting($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name) {
     $storage = \Drupal::service('entity.manager')->getStorage('vote');
@@ -142,7 +165,7 @@ abstract class VotingApiWidgetBase extends PluginBase implements VotingApiWidget
     $window_field_setting = $config->getSetting($window_type);
     $use_site_default = FALSE;
 
-    if ($window_field_setting === NULL || $window_field_setting === -1) {
+    if ($window_field_setting === NULL || $window_field_setting === "-1") {
       $use_site_default = TRUE;
     }
 

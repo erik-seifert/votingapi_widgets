@@ -13,6 +13,23 @@ use Drupal\Component\Utility\Html;
  */
 class BaseRatingForm extends ContentEntityForm {
 
+  public function getFormId() {
+    $form_id = parent::getFormId();
+    $entity = $this->getEntity();
+    $voted_entity_type = $entity->getVotedEntityType();
+    $voted_entity_id = $entity->getVotedEntityId();
+    $voted_entity = $this->entityManager->getStorage($voted_entity_type)->load($voted_entity_id);
+
+    $additional_form_id_parts = [];
+    $additional_form_id_parts[] = $voted_entity->getEntityTypeId();
+    $additional_form_id_parts[] = $voted_entity->bundle();
+    $additional_form_id_parts[] = $voted_entity->id();
+    $additional_form_id_parts[] = $entity->bundle();
+    $additional_form_id_parts[] = $entity->field_name->value;
+    $form_id = implode('_', $additional_form_id_parts) . '__' . $form_id;
+    return $form_id;
+  }
+
   public $plugin;
 
   /**
@@ -38,10 +55,20 @@ class BaseRatingForm extends ContentEntityForm {
       '#attributes' => [
         'autocomplete' => 'off',
         'data-default-value' => $results ?: -1,
+        'data-result-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
+        'data-vote-value' => $entity->getValue(),
         'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
       ],
       '#default_value' => $results,
     ];
+
+    $form['value']['#attributes']['data-show-own-vote'] = 'true';
+    $form['value']['#default_value'] = (int) $entity->getValue();
+
+    if (!$form_state->get('show_own_vote')) {
+      $form['value']['#attributes']['data-show-own-vote'] = 'false';
+      $form['value']['#default_value'] = $this->getResults($result_function);
+    }
 
     if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
@@ -70,7 +97,7 @@ class BaseRatingForm extends ContentEntityForm {
         'event' => 'click',
         'wrapper' => $form_id,
         'progress' => [
-          'method' => 'replace',
+          'type' => NULL,
         ],
       ],
     ];
@@ -130,8 +157,17 @@ class BaseRatingForm extends ContentEntityForm {
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
-    $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
-    $form['value']['#attributes']['data-default-value'] = $this->getResults($result_function);
+
+    $form['value']['#attributes']['data-show-own-vote'] = 'true';
+    $form['value']['#default_value'] = (int) $entity->getValue();
+
+    if (!$form_state->get('show_own_vote')) {
+      $form['value']['#attributes']['data-show-own-vote'] = 'false';
+      $form['value']['#default_value'] = $this->getResults($result_function, TRUE);
+    }
+
+    $form['value']['#attributes']['data-vote-value'] = $entity->getValue();
+    $form['value']['#attributes']['data-result-value'] = $this->getResults($result_function);
     if ($form_state->get('show_results')) {
       $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
     }
