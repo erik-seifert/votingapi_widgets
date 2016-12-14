@@ -59,7 +59,8 @@ class FiveStarWidget extends VotingApiWidgetBase {
     $form['value']['#attributes'] = [
       'data-style' => 'default',
       'data-is-edit' => 1,
-    ];  }
+    ];
+  }
 
   /**
    * {@inheritdoc}
