@@ -42,15 +42,6 @@ class FiveStarWidget extends VotingApiWidgetBase {
       ],
       '#attached' => [
         'library' => ['votingapi_widgets/fivestar'],
-        'drupalSettings' => [
-          'votingapi_widgets' => [
-            'fivestar' => [
-              'style' => $style,
-              'is_preview' => false,
-              'read_only' => $read_only
-            ]
-          ]
-        ]
       ],
     ];
     return $build;
@@ -63,18 +54,12 @@ class FiveStarWidget extends VotingApiWidgetBase {
     $form['value']['#prefix'] = '<div class="votingapi-widgets fivestar">';
     $form['value']['#attached']  = [
       'library' => ['votingapi_widgets/fivestar'],
-      'drupalSettings' => [
-        'votingapi_widgets' => [
-          'fivestar' => [
-            'style' => 'default',
-            'is_preview' => true,
-            'read_only' => false
-          ]
-        ]
-      ]
     ];
     $form['value']['#suffix'] = '</div>';
-  }
+    $form['value']['#attributes'] = [
+      'data-style' => 'default',
+      'data-is-edit' => 1,
+    ];  }
 
   /**
    * {@inheritdoc}
