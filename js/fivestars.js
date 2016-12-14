@@ -10,16 +10,18 @@
       var $this = $(this);
       var $select = $this.find('select');
       var value = $select.data('default-value');
-      var isPreview = $select.data('is-edit');
+      var isPreview = settings.votingapi_widgets.fivestar.is_preview;
+      var style = settings.votingapi_widgets.fivestar.style;
       if (!value) {
         value = -1;
       }
       var options = {
-        theme: ($select.data('style') == 'default') ? 'css-stars' : $select.data('style'),
+        theme: style == 'default' ? 'css-stars' : style,
+        showSelectedRating: true,
         initialRating: value,
         allowEmpty: true,
         emptyValue: '',
-        readonly: ($select.attr('disabled')) ? true : false,
+        readonly: settings.votingapi_widgets.fivestar.read_only ? true : false,
         onSelect: function (value, text) {
           if (isPreview) {
             return;
