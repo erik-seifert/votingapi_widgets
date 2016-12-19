@@ -74,7 +74,7 @@ class BaseRatingForm extends ContentEntityForm {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
 
-    if ($form_state->get('show_results') && $results > 0) {
+    if ($form_state->get('show_results') && count($results) > 0) {
       $form['result'] = [
         '#theme' => 'container',
         '#attributes' => [
