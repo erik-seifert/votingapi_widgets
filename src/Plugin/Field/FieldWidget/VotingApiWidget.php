@@ -5,8 +5,6 @@ namespace Drupal\votingapi_widgets\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\votingapi_widgets\Plugin\Field\FieldType\VotingApiField;
-use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
 
 /**
  * Plugin implementation of the 'voting_api_widget' widget.

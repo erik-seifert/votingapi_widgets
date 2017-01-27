@@ -9,8 +9,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
-use Drupal\votingapi\Entity\Vote;
-use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
