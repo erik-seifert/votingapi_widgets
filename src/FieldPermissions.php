@@ -5,11 +5,14 @@ namespace Drupal\votingapi_widgets;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityFieldManager;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Field permissions.
  */
 class FieldPermissions implements ContainerInjectionInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The FieldPermissionsService.
@@ -45,28 +48,28 @@ class FieldPermissions implements ContainerInjectionInterface {
       foreach ($info as $field_name => $field_info) {
         foreach ($field_info['bundles'] as $bundle) {
           $perms['vote on ' . $entity_type . ':' . $bundle . ':' . $field_name] = [
-            'title' => t('Vote on type @type from bundle @bundle in field @field', [
+            'title' => $this->t('Vote on type @type from bundle @bundle in field @field', [
               '@type' => $entity_type,
               '@bundle' => $bundle,
               '@field' => $field_name,
             ]),
           ];
           $perms['edit own vote on ' . $entity_type . ':' . $bundle . ':' . $field_name] = [
-            'title' => t('Edit vote on type @type from bundle @bundle in field @field', [
+            'title' => $this->t('Edit vote on type @type from bundle @bundle in field @field', [
               '@type' => $entity_type,
               '@bundle' => $bundle,
               '@field' => $field_name,
             ]),
           ];
           $perms['clear own vote on ' . $entity_type . ':' . $bundle . ':' . $field_name] = [
-            'title' => t('Clear vote on type @type from bundle @bundle in field @field', [
+            'title' => $this->t('Clear vote on type @type from bundle @bundle in field @field', [
               '@type' => $entity_type,
               '@bundle' => $bundle,
               '@field' => $field_name,
             ]),
           ];
           $perms['edit voting status on ' . $entity_type . ':' . $bundle . ':' . $field_name] = [
-            'title' => t('Open or close voting on type @type from bundle @bundle in field @field', [
+            'title' => $this->t('Open or close voting on type @type from bundle @bundle in field @field', [
               '@type' => $entity_type,
               '@bundle' => $bundle,
               '@field' => $field_name,

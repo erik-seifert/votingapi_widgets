@@ -3,6 +3,7 @@
 namespace Drupal\votingapi_widgets\Plugin\votingapi_widget;
 
 use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Assigns ownership of a node to a user.
@@ -17,6 +18,8 @@ use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
  * )
  */
 class UsefulWidget extends VotingApiWidgetBase {
+
+  use StringTranslationTrait;
 
   /**
    * Vote form.
@@ -60,7 +63,7 @@ class UsefulWidget extends VotingApiWidgetBase {
    */
   public function getStyles() {
     return [
-      'default' => t('Default'),
+      'default' => $this->t('Default'),
     ];
   }
 

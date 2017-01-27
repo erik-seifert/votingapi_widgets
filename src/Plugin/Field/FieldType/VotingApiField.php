@@ -9,6 +9,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
@@ -22,6 +23,8 @@ use Drupal\votingapi\Entity\VoteType;
  * )
  */
 class VotingApiField extends FieldItemBase {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -57,13 +60,13 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    // Prevent early t() calls by using the TranslatableMarkup.
+    // Prevent early $this->t() calls by using the TranslatableMarkup.
     $properties['status'] = DataDefinition::create('integer')
-      ->setLabel(t('Vote status'))
+      ->setLabel($this->t('Vote status'))
       ->setRequired(TRUE);
 
     $properties['value'] = DataDefinition::create('any')
-      ->setLabel(t('Vote initial'))
+      ->setLabel($this->t('Vote initial'))
       ->setRequired(FALSE);
 
     return $properties;
@@ -117,7 +120,7 @@ class VotingApiField extends FieldItemBase {
     }
     $element['vote_type'] = array(
       '#type' => 'select',
-      '#title' => t('Vote type'),
+      '#title' => $this->t('Vote type'),
       '#options' => $options,
       '#required' => TRUE,
       '#default_value' => $this->getSetting('vote_type'),
@@ -126,7 +129,7 @@ class VotingApiField extends FieldItemBase {
 
     $element['vote_plugin'] = array(
       '#type' => 'select',
-      '#title' => t('Vote plugin'),
+      '#title' => $this->t('Vote plugin'),
       '#options' => $vote_options,
       '#required' => TRUE,
       '#default_value' => $this->getSetting('vote_plugin'),

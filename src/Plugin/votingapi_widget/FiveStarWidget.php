@@ -3,6 +3,7 @@
 namespace Drupal\votingapi_widgets\Plugin\votingapi_widget;
 
 use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Assigns ownership of a node to a user.
@@ -20,6 +21,8 @@ use Drupal\votingapi_widgets\Plugin\VotingApiWidgetBase;
  * )
  */
 class FiveStarWidget extends VotingApiWidgetBase {
+
+  use StringTranslationTrait;
 
   /**
    * Vote form.
@@ -52,7 +55,7 @@ class FiveStarWidget extends VotingApiWidgetBase {
    */
   public function getInitialVotingElement(array &$form) {
     $form['value']['#prefix'] = '<div class="votingapi-widgets fivestar">';
-    $form['value']['#attached']  = [
+    $form['value']['#attached'] = [
       'library' => ['votingapi_widgets/fivestar'],
     ];
     $form['value']['#suffix'] = '</div>';
@@ -67,15 +70,15 @@ class FiveStarWidget extends VotingApiWidgetBase {
    */
   public function getStyles() {
     return [
-      'default' => t('Default'),
-      'bars-horizontal' => t('Bars horizontal'),
-      'css-stars' => t('Css stars'),
-      'bars-movie' => t('Bars movie'),
-      'bars-pill' => t('Bars pill'),
-      'bars-square' => t('Bars square'),
-      'fontawesome-stars-o' => t('Fontawesome stars-o'),
-      'fontawesome-stars' => t('Fontawesome stars'),
-      'bootstrap-stars' => t('Bootstrap stars'),
+      'default' => $this->t('Default'),
+      'bars-horizontal' => $this->t('Bars horizontal'),
+      'css-stars' => $this->t('Css stars'),
+      'bars-movie' => $this->t('Bars movie'),
+      'bars-pill' => $this->t('Bars pill'),
+      'bars-square' => $this->t('Bars square'),
+      'fontawesome-stars-o' => $this->t('Fontawesome stars-o'),
+      'fontawesome-stars' => $this->t('Fontawesome stars'),
+      'bootstrap-stars' => $this->t('Bootstrap stars'),
     ];
   }
 

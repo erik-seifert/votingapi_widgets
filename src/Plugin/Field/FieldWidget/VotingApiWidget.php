@@ -5,6 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'voting_api_widget' widget.
@@ -19,6 +20,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class VotingApiWidget extends WidgetBase {
 
+  use StringTranslationTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -32,7 +35,7 @@ class VotingApiWidget extends WidgetBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form['show_initial_vote'] = [
       '#type' => 'select',
-      '#options' => [0 => t('Show not initial voting'), 1 => t('Show initial voting')],
+      '#options' => [0 => $this->t('Show not initial voting'), 1 => $this->t('Show initial voting')],
       '#default_value' => $this->getSetting('show_initial_vote'),
     ];
     return $form;
@@ -45,11 +48,11 @@ class VotingApiWidget extends WidgetBase {
     $entity = $items->getEntity();
     $element['status'] = array(
       '#type' => 'radios',
-      '#title' => t('Votes'),
+      '#title' => $this->t('Votes'),
       '#default_value' => isset($items->getValue('status')[0]['status']) ? $items->getValue('status')[0]['status'] : 1,
       '#options' => array(
-        1 => t('Open'),
-        0 => t('Closed'),
+        1 => $this->t('Open'),
+        0 => $this->t('Closed'),
       ),
     );
     $entity_type = $this->fieldDefinition->getTargetEntityTypeId();
@@ -67,7 +70,7 @@ class VotingApiWidget extends WidgetBase {
 
     $permission = 'vote on ' . $entity_type . ':' . $bundle . ':' . $field_name;
     $options = [
-      '' => t('None'),
+      '' => $this->t('None'),
     ];
 
     $vote_type = 'vote';
@@ -75,7 +78,7 @@ class VotingApiWidget extends WidgetBase {
     $options += $plugin->getValues();
     $element['value'] = [
       '#type' => 'select',
-      '#title' => t('Your vote'),
+      '#title' => $this->t('Your vote'),
       '#options' => $options,
       '#default_value' => $vote->getValue(),
       '#access' => ($this->getSetting('show_initial_vote') && $account->hasPermission($permission)) ? TRUE : FALSE,

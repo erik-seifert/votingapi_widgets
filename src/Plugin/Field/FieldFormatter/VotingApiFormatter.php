@@ -5,6 +5,7 @@ namespace Drupal\votingapi_widgets\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'voting_api_formatter' formatter.
@@ -19,16 +20,18 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class VotingApiFormatter extends FormatterBase {
 
+  use StringTranslationTrait;
+
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
     return [
-      'readonly'     => FALSE,
-      'style'        => 'default',
-      'show_results' => FALSE,
-      'values'       => [],
-      'show_own_vote'=> FALSE,
+      'readonly'      => FALSE,
+      'style'         => 'default',
+      'show_results'  => FALSE,
+      'values'        => [],
+      'show_own_vote' => FALSE,
       // Implement default settings.
     ] + parent::defaultSettings();
   }
@@ -57,23 +60,23 @@ class VotingApiFormatter extends FormatterBase {
     return [
       // Implement settings form.
       'style'        => [
-        '#title'         => t('Styles'),
+        '#title'         => $this->t('Styles'),
         '#type'          => 'select',
         '#options'       => $styles,
         '#default_value' => $this->getSetting('style'),
       ],
       'readonly'     => [
-        '#title'         => t('Readonly'),
+        '#title'         => $this->t('Readonly'),
         '#type'          => 'checkbox',
         '#default_value' => $this->getSetting('readonly'),
       ],
       'show_results' => [
-        '#title'         => t('Show results'),
+        '#title'         => $this->t('Show results'),
         '#type'          => 'checkbox',
         '#default_value' => $this->getSetting('show_results'),
       ],
       'show_own_vote' => [
-        '#title'         => t('Show own vote'),
+        '#title'         => $this->t('Show own vote'),
         '#description'   => $this->t('Show own cast vote instead of results. (Useful on add/ edit forms with rate widget).'),
         '#type'          => 'checkbox',
         '#default_value' => $this->getSetting('show_own_vote'),
@@ -86,10 +89,10 @@ class VotingApiFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    $summary[] = t('Styles: @styles', ['@styles' => $this->getSetting('style')]);
-    $summary[] = t('Readonly: @readonly', ['@readonly' => $this->getSetting('readonly') ? t('yes') : t('no')]);
-    $summary[] = t('Show results: @results', ['@results' => $this->getSetting('show_results') ? t('yes') : t('no')]);
-    $summary[] = t('Show own vote: @show_own_vote', ['@show_own_vote' => $this->getSetting('show_own_vote') ? t('yes') : t('no')]);
+    $summary[] = $this->t('Styles: @styles', ['@styles' => $this->getSetting('style')]);
+    $summary[] = $this->t('Readonly: @readonly', ['@readonly' => $this->getSetting('readonly') ? $this->t('yes') : $this->t('no')]);
+    $summary[] = $this->t('Show results: @results', ['@results' => $this->getSetting('show_results') ? $this->t('yes') : $this->t('no')]);
+    $summary[] = $this->t('Show own vote: @show_own_vote', ['@show_own_vote' => $this->getSetting('show_own_vote') ? $this->t('yes') : $this->t('no')]);
 
     return $summary;
   }
