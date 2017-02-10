@@ -9,7 +9,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\votingapi\Entity\VoteType;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'voting_api_field' field type.
@@ -23,8 +22,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  * )
  */
 class VotingApiField extends FieldItemBase {
-
-  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -60,13 +57,13 @@ class VotingApiField extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    // Prevent early $this->t() calls by using the TranslatableMarkup.
+    // Prevent early t() calls by using the TranslatableMarkup.
     $properties['status'] = DataDefinition::create('integer')
-      ->setLabel($this->t('Vote status'))
+      ->setLabel(t('Vote status'))
       ->setRequired(TRUE);
 
     $properties['value'] = DataDefinition::create('any')
-      ->setLabel($this->t('Vote initial'))
+      ->setLabel(t('Vote initial'))
       ->setRequired(FALSE);
 
     return $properties;

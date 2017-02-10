@@ -5,7 +5,6 @@ namespace Drupal\votingapi_widgets\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'voting_api_formatter' formatter.
@@ -19,8 +18,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  * )
  */
 class VotingApiFormatter extends FormatterBase {
-
-  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
