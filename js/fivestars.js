@@ -9,7 +9,7 @@
      $('body').find('.fivestar').each(function () {
       var $this = $(this);
       var $select = $this.find('select');
-      var value = $select.data('result-value');
+      var value = Math.round($select.data('result-value'));
       var vote_own_value = $select.data('vote-value');
       var isEdit = $select.data('is-edit');
       var show_own_vote = $select.data('show-own-vote');
