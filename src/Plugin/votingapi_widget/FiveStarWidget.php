@@ -29,7 +29,6 @@ class FiveStarWidget extends VotingApiWidgetBase {
    */
   public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings) {
     $form = $this->getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings);
-    dsm($settings,'Set');
     $build = [
       'rating' => [
         '#theme' => 'container',
