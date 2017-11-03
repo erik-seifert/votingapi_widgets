@@ -12,7 +12,7 @@ interface VotingApiWidgetInterface extends PluginInspectionInterface {
   /**
    * Build form.
    */
-  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE, $show_own_vote = FALSE);
+  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings);
 
   /**
    * Get available styles.

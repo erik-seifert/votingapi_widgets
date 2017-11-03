@@ -76,6 +76,7 @@ class VotingApiFormatter extends FormatterBase {
         '#title'         => $this->t('Show own vote'),
         '#description'   => $this->t('Show own cast vote instead of results. (Useful on add/ edit forms with rate widget).'),
         '#type'          => 'checkbox',
+        '#return_value'  => 1,
         '#default_value' => $this->getSetting('show_own_vote'),
       ],
     ] + parent::settingsForm($form, $form_state);
@@ -107,6 +108,7 @@ class VotingApiFormatter extends FormatterBase {
     $vote_type = $field_settings['vote_type'];
     $vote_plugin = $field_settings['vote_plugin'];
     $readonly = $this->getSetting('readonly');
+
     $show_own_vote = $this->getSetting('show_own_vote') ? TRUE : FALSE;
 
     if ($items->status === "0") {
@@ -124,10 +126,7 @@ class VotingApiFormatter extends FormatterBase {
             $entity->id(),
             $vote_type,
             $field_name,
-            $this->getSetting('style'),
-            $this->getSetting('show_results'),
-            $readonly,
-            $show_own_vote,
+            serialize($this->getSettings())
           ],
         ],
         '#create_placeholder' => TRUE,

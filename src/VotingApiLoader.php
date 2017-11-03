@@ -21,7 +21,7 @@ class VotingApiLoader {
   /**
    * Build rate form.
    */
-  public function buildForm($plugin_id, $entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only, $show_own_vote) {
+  public function buildForm($plugin_id, $entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings) {
     $definitions = $this->manager->getDefinitions();
     $entity = $this->entityTypeManager->getStorage($entity_type)->load($entity_id);
     $plugin = $this->manager->createInstance($plugin_id, $definitions[$plugin_id]);
@@ -29,7 +29,7 @@ class VotingApiLoader {
     if ($fieldDefinition->get('status') != 1) {
       $read_only = TRUE;
     }
-    return $plugin->buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only, $show_own_vote);
+    return $plugin->buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, unserialize($settings));
   }
 
 }

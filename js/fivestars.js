@@ -34,6 +34,7 @@
           $this.find('a').addClass('disabled');
         },
       };
+
       $this.find('select').once('processed').barrating('show', options);
       $this.find('[type=submit]').hide();
     });

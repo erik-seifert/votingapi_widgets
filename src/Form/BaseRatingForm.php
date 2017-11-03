@@ -42,6 +42,7 @@ class BaseRatingForm extends ContentEntityForm {
     $options = $form_state->get('options');
     $form_id = Html::getUniqueId('vote-form');
     $plugin = $form_state->get('plugin');
+    $settings = $form_state->get('settings');
 
     $form['#cache']['contexts'][] = 'user.permissions';
     $form['#cache']['contexts'][] = 'user.roles:authenticated';
@@ -55,23 +56,23 @@ class BaseRatingForm extends ContentEntityForm {
         'autocomplete' => 'off',
         'data-result-value' => ($this->getResults($result_function)) ? $this->getResults($result_function) : -1,
         'data-vote-value' => $entity->getValue(),
-        'data-style' => ($form_state->get('style')) ? $form_state->get('style') : 'default',
+        'data-style' => ($settings['style']) ? $settings['style'] : 'default',
       ],
     ];
 
     $form['value']['#attributes']['data-show-own-vote'] = 'true';
     $form['value']['#default_value'] = (int) $entity->getValue();
 
-    if (!$form_state->get('show_own_vote')) {
+    if (!$settings['show_own_vote']) {
       $form['value']['#attributes']['data-show-own-vote'] = 'false';
       $form['value']['#default_value'] = $this->getResults($result_function);
     }
 
-    if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
+    if ($settings['readonly'] || !$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
 
-    if ($form_state->get('show_results')) {
+    if ($settings['show_results']) {
       $form['result'] = [
         '#theme' => 'container',
         '#attributes' => [
@@ -151,6 +152,7 @@ class BaseRatingForm extends ContentEntityForm {
    */
   public function ajaxSubmit(array $form, FormStateInterface $form_state) {
     $this->save($form, $form_state);
+    $settings = $form_state->get('settings');
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
     $entity = $this->getEntity();
@@ -165,10 +167,11 @@ class BaseRatingForm extends ContentEntityForm {
 
     $form['value']['#attributes']['data-vote-value'] = $entity->getValue();
     $form['value']['#attributes']['data-result-value'] = $this->getResults($result_function);
-    if ($form_state->get('show_results')) {
+    if ($settings['show_results'] === 1) {
       $form['result']['#children']['result'] = $plugin->getVoteSummary($entity);
     }
-    if ($form_state->get('read_only') || !$plugin->canVote($entity)) {
+
+    if (!$plugin->canVote($entity)) {
       $form['value']['#attributes']['disabled'] = 'disabled';
     }
 

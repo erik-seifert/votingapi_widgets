@@ -27,8 +27,9 @@ class FiveStarWidget extends VotingApiWidgetBase {
   /**
    * Vote form.
    */
-  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only = FALSE, $show_own_vote = FALSE) {
-    $form = $this->getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $style, $show_results, $read_only, $show_own_vote);
+  public function buildForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings) {
+    $form = $this->getForm($entity_type, $entity_bundle, $entity_id, $vote_type, $field_name, $settings);
+    dsm($settings,'Set');
     $build = [
       'rating' => [
         '#theme' => 'container',
@@ -36,7 +37,7 @@ class FiveStarWidget extends VotingApiWidgetBase {
           'class' => [
             'votingapi-widgets',
             'fivestar',
-            ($read_only) ? 'read_only' : '',
+            ($settings['readonly'] === 1) ? 'read_only' : '',
           ],
         ],
         '#children' => [
