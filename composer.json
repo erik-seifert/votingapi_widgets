@@ -10,5 +10,21 @@
     "issues": "https://www.drupal.org/project/issues/votingapi_widgets",
     "source": "http://cgit.drupalcode.org/votingapi_widgets"
   },
-  "require": { }
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "antennaio/jquery-bar-rating",
+        "version": "1.2.2",
+        "type": "drupal-library",
+        "dist": {
+          "type": "zip",
+          "url": "https://github.com/antennaio/jquery-bar-rating/archive/v1.2.2.zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "antennaio/jquery-bar-rating": "1.2.2"
+  }
 }

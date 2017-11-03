@@ -2,19 +2,19 @@ fivestar:
   version: VERSION
   js:
     js/fivestars.js : {}
-    https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/jquery.barrating.min.js: {}
+    /libraries/jquery-bar-rating/dist/jquery.barrating.min.js: {}
   css:
     theme:
       https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/css-stars.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-square.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-pill.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-movie.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-horizontal.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/fontawesome-stars.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/fontawesome-stars-o.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bars-reversed.min.css: {}
-      https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.1/themes/bootstrap-stars.min.css: {}
+      /libraries/jquery-bar-rating/dist/themes/css-stars.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bars-square.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bars-pill.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bars-movie.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bars-horizontal.css: {}
+      /libraries/jquery-bar-rating/dist/themes/fontawesome-stars.css: {}
+      /libraries/jquery-bar-rating/dist/themes/fontawesome-stars-o.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bars-reversed.css: {}
+      /libraries/jquery-bar-rating/dist/themes/bootstrap-stars.css: {}
       css/fivestar.css: {}
   dependencies:
     - core/jquery
