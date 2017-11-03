@@ -4,4 +4,4 @@ services:
     parent: default_plugin_manager
   voting_api.lazy_loader:
     class: Drupal\votingapi_widgets\VotingApiLoader
-    arguments: ['@plugin.manager.voting_api_widget.processor']
+    arguments: ['@plugin.manager.voting_api_widget.processor', '@entity_type.manager']
