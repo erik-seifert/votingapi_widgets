@@ -155,7 +155,6 @@ class BaseRatingForm extends ContentEntityForm {
     $settings = $form_state->get('settings');
     $result_function = $this->getResultFunction($form_state);
     $plugin = $form_state->get('plugin');
-    $entity = $this->getEntity();
 
     $form['value']['#attributes']['data-show-own-vote'] = 'true';
     $form['value']['#default_value'] = (int) $entity->getValue();
@@ -183,8 +182,14 @@ class BaseRatingForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $status = parent::save($form, $form_state);
-    return $status;
+    $entity = $this->getEntity();
+    $plugin = $form_state->get('plugin');
+
+    if ($plugin->canVote($entity)) {
+      return parent::save($form, $form_state);
+    }
+
+    return FALSE;
   }
 
 }
